@@ -1,5 +1,69 @@
 import mongoose from "mongoose";
+import bcryptjs from "bcryptjs";
 import User from '../models/user.model.js';
+
+export const signupUser = async (req, res) => {
+    try {
+        const { email, password, confirmPassword, type, image, name} = req.body;
+        
+        if (!email || !password || !confirmPassword || !type || !image || !name) {
+        return res.status(400).json({ success: false, message: "Please provide all fields" });
+        }
+
+        if (password.length < 6) {
+        return res
+            .status(400)
+            .json({ success: false, message: "Password should be at least 6 characters" });
+        }
+        
+        if (confirmPassword !== password) {
+        return res.status(400).json({ success: false, message: "Passwords don't match" });
+        }
+
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+        return res
+            .status(400)
+            .json({ success: false, message: "User with this email already exists" });
+        }
+        const hashedPassword = await bcryptjs.hash(password, 8);
+    
+        const newUser = new User({ email, password: hashedPassword, type, image, name });
+        const savedUser = await newUser.save();
+        res
+        .status(201)
+        .json({ message: "User signed in successfully", success: true, savedUser });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+}
+
+export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+          return res.status(400).json({ success: false, message: "Please enter all the fields" });
+        }
+    
+        const user = await User.findOne({ email });
+        if (!user) {
+          return res
+            .status(400)
+            .send({ success: false, message: "User with this email does not exist" });
+        }
+    
+        const isMatch = await bcryptjs.compare(password, user.password);
+    
+        if (!isMatch) {
+          return res.status(400).send({ success: false, message: "Incorrect password." });
+        }
+       
+        res.status(201).json({ message: "User logged in successfully", success: true });
+      } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+      }
+}
 
 export const getUsers = async (req, res) => {
     try {
