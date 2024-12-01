@@ -12,10 +12,6 @@ import {
   import { useState } from 'react'
   
   const Login = () => {
-    const [newUser, setUserData] = useState({
-		email: "",
-		password: "",
-	});
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState();
@@ -37,7 +33,7 @@ import {
 				status: "error",
 				isClosable: true,
 			});
-            setLoading(false);
+            
 		} else {
             toast({
 				title: "Success",
@@ -45,15 +41,10 @@ import {
 				status: "success",
 				isClosable: true,
 			});
-
-            setUserData({
-                token: loginResult.data.token,
-                user: loginResult.data.user,
-            });
-
-            localStorage.setItem("auth-token", loginResult.data.token);
+            
             navigate("/");
         }
+        setLoading(false);
     }
   
     return (

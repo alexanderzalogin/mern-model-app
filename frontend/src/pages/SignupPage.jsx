@@ -39,7 +39,6 @@ import {
 				status: "error",
 				isClosable: true,
 			});
-            setLoading(false);
 		} else {
             toast({
 				title: "Success",
@@ -48,14 +47,9 @@ import {
 				isClosable: true,
 			});
 
-            setUserData({
-                token: signupResult.data.token,
-                user: signupResult.data.user,
-            });
-
-            localStorage.setItem("auth-token", signupResult.data.token);
             navigate("/");
         }
+        setLoading(false);
     }
   
     return (
