@@ -34,23 +34,13 @@ const Login = () => {
                 status: "error",
                 isClosable: true,
             });
-
         } else {
-            toast({
-                title: "Success",
-                description: loginResult.data.message,
-                status: "success",
-                isClosable: true,
-            });
-
             const token = loginResult.data.token;
             Cookies.set("authToken", token);
             const userResult = await getUser(token);
-            console.log(userResult);
             const user = userResult.data.user;
             Cookies.set("user", JSON.stringify(user));
-
-            navigate("/");
+            window.location.href = '/dashboard';
         }
         setLoading(false);
     }

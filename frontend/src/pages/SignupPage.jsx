@@ -47,7 +47,7 @@ const Signup = () => {
                 isClosable: true,
             });
 
-            navigate("/");
+            navigate("/login");
         }
         setLoading(false);
     }

@@ -5,6 +5,8 @@ import HomePage from "./pages/HomePage"
 import CreatePage from "./pages/CreatePage"
 import LoginPage from "./pages/LoginPage"
 import SignupPage from "./pages/SignupPage"
+import ProtectedRoute from "./components/ProtectedRoute"
+import DashboardPage from "./pages/DashboardPage"
 
 const App = () => {
   return (
@@ -12,6 +14,11 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path='/' element={<HomePage />} />
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        } />
         <Route path='/create' element={<CreatePage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignupPage />} />
