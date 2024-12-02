@@ -72,11 +72,25 @@ export const useUserStore = create((set) => ({
 				"Content-Type": "application/json",
 			},
 			method: "POST",
-			body: JSON.stringify({ email, password, confirmPassword, type, image, name})
+			body: JSON.stringify({ email, password, confirmPassword, type, image, name })
 		});
 		const data = await res.json();
 		if (!data.success) return { success: false, message: data.message };
 
 		return { success: true, data: data.message };
 	},
+	getUser: async (token) => {
+		const res = await fetch(`/api/v1/users/user`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"x-token": token,
+			},
+		});
+
+		const data = await res.json();
+		if (!data.success) return { success: false, message: "Failed to fetch user" };
+
+		return { success: true, data: data };
+	}
 }));
