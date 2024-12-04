@@ -10,7 +10,6 @@ const HomePage = () => {
     useEffect(() => {
         fetchUsers();
     }, [fetchUsers]);
-    console.log("users", users);
 
     return (
         <Container maxW='container.xl' py={12}>

@@ -35,11 +35,17 @@ const Login = () => {
                 isClosable: true,
             });
         } else {
+            var inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
             const token = loginResult.data.token;
-            Cookies.set("authToken", token);
+            Cookies.set("authToken", token, {
+                expires: inFifteenMinutes
+            });
             const userResult = await getUser(token);
             const user = userResult.data.user;
-            Cookies.set("user", JSON.stringify(user));
+            Cookies.set("user", JSON.stringify(user), {
+                expires: inFifteenMinutes
+            });
+            localStorage.setItem('currentUser', JSON.stringify(user));
             window.location.href = '/dashboard';
         }
         setLoading(false);

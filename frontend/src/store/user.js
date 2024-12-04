@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { loginUser } from "../../../backend/controllers/user.controller";
 
 export const useUserStore = create((set) => ({
 	users: [],
@@ -92,5 +91,18 @@ export const useUserStore = create((set) => ({
 		if (!data.success) return { success: false, message: "Failed to fetch user" };
 
 		return { success: true, data: data };
-	}
+	},
+	logoutUser: async (token) => {
+		const res = await fetch(`/api/v1/users/login`, {
+			headers: {
+				"Content-Type": "application/json",
+			},
+			method: "POST",
+			body: JSON.stringify({ email, password })
+		});
+		const data = await res.json();
+		if (!data.success) return { success: false, message: data.message };
+
+		return { success: true, data: data };
+	},
 }));

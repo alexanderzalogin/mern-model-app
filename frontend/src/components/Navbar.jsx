@@ -12,12 +12,12 @@ const Navbar = () => {
     const [token, setToken] = useState(Cookies.get("authToken"));
 
     const checkToken = () => {
-        console.log(Cookies.get("authToken"));
         setToken(Cookies.get("authToken"));
     }
     const logout = () => {
         Cookies.remove("authToken");
         Cookies.remove("user");
+        localStorage.clear();
         setToken('');
     };
 
