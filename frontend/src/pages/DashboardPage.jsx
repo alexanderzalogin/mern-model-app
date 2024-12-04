@@ -17,12 +17,13 @@ import {
     ModalHeader,
     useDisclosure,
     Input,
-    useToast
+    useToast,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useUserStore } from "../store/user";
 import userTypesEnum from "../enums/userTypes.enum";
+import Sidebar from "../components/Sidebar";
 
 const DashboardPage = () => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -76,9 +77,10 @@ const DashboardPage = () => {
                     p='2'
                     m="1"
                     color='white'
-                    fontSize='1.2rem'
+                    fontSize='0.9rem'
                 >
-                    Nav
+                    <Sidebar>
+                    </Sidebar>
                 </GridItem>
                 <GridItem
                     pl='2'
