@@ -55,9 +55,6 @@ export default function SimpleSidebar({ user }) {
       break;
   }
   
-  // LinkItems = LinkItems.filter((item) => {
-  //   return item.name == "Agencies" && user.type == 'agency'
-  // })
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.800')}>
       <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
