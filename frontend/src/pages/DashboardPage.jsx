@@ -1,13 +1,13 @@
-import { 
-    Container, 
-    Grid, 
-    GridItem, 
-    Image, 
-    Box, 
-    HStack, 
-    VStack, 
-    Text, 
-    Button, 
+import {
+    Container,
+    Grid,
+    GridItem,
+    Image,
+    Box,
+    HStack,
+    VStack,
+    Text,
+    Button,
     Modal,
     ModalOverlay,
     ModalBody,
@@ -20,15 +20,11 @@ import {
     useToast
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
-import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUserStore } from "../store/user";
+import userTypesEnum from "../enums/userTypes.enum";
 
 const DashboardPage = () => {
-    // const { getUser } = useUserStore();
-    // const token = Cookies.get("authToken");
-    // const [user, setUser] = useState()
-
     const user = JSON.parse(localStorage.getItem("currentUser"));
     const toast = useToast();
     const [updatedUser, setupdatedUser] = useState(user);
@@ -36,35 +32,27 @@ const DashboardPage = () => {
     const { updateUserPhoto } = useUserStore();
 
     const handleUpdateUserPhoto = async (uid, updatedUser) => {
-		const { success, message } = await updateUserPhoto(uid, updatedUser);
-		onClose();
-		if (!success) {
-			toast({
-				title: "Error",
-				description: message,
-				status: "error",
-				duration: 3000,
-				isClosable: true,
-			});
-		} else {
-			toast({
-				title: "Success",
-				description: "User photo updated successfully",
-				status: "success",
-				duration: 3000,
-				isClosable: true,
-			});
-            console.log(updatedUser.image);
-		}
-	};
-    // useEffect(() => {
-    //     const fetchUser = async (token) => {
-    //         const response = await getUser(token)
-    //         setUser(response.data.user)
-    //     }
-    //     fetchUser(token)
-    // },[])
-    console.log(user);
+        const { success, message } = await updateUserPhoto(uid, updatedUser);
+        onClose();
+        if (!success) {
+            toast({
+                title: "Error",
+                description: message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        } else {
+            toast({
+                title: "Success",
+                description: "User photo updated successfully",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
+
     return (
         <Container maxW='container.xl' py={12}>
             <Grid
@@ -105,14 +93,17 @@ const DashboardPage = () => {
                     <Box pos="relative" w="100%" h="200px" bg='gray.700' borderRadius='2xl'>
                         <Box borderRadius='2xl' bg='gray.700' p="2">
                             Profile
+                            <Text>
+                                {userTypesEnum.map((type) => (
+                                    (type.value == user.type ? type.label : '')
+                                ))}
+                            </Text>
                         </Box>
                         <Box borderRadius='2xl' bg='gray.800' pos="absolute" top="99%" left="50%" color="white" transform="translate(-50%,-50%)" h="100px" width="95%">
                             <HStack>
                                 <Box w={24} pos="relative">
                                     <Image borderRadius='full' src={user.image} alt={user.name} h={24} w={24} objectFit='cover' p="2" />
-                                        
-                                            <EditIcon onClick={onOpen} pos="absolute" top="72%" left="72%" size="sm" />
-                                    
+                                    <EditIcon _hover={{ cursor: "pointer" }} onClick={onOpen} pos="absolute" top="72%" left="72%" size="sm" />
                                 </Box>
                                 <Box>
                                     <VStack alignItems="start">
@@ -137,35 +128,35 @@ const DashboardPage = () => {
                 </GridItem>
             </Grid>
             <Modal isOpen={isOpen} onClose={onClose}>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader>Update Profile Photo</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody>
-						<VStack spacing={4}>
-							<Input
-								placeholder='Image URL'
-								name='image'
-								value={updatedUser.photo ? updatedUser.photo : user.image}
-								onChange={(e) => setupdatedUser({ photo: e.target.value })}
-							/>
-						</VStack>
-					</ModalBody>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Update Profile Photo</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <VStack spacing={4}>
+                            <Input
+                                placeholder='Image URL'
+                                name='image'
+                                value={updatedUser.photo ? updatedUser.photo : user.image}
+                                onChange={(e) => setupdatedUser({ photo: e.target.value })}
+                            />
+                        </VStack>
+                    </ModalBody>
 
-					<ModalFooter>
-						<Button
-							colorScheme='blue'
-							mr={3}
-							onClick={() => handleUpdateUserPhoto(user._id, updatedUser)}
-						>
-							Update
-						</Button>
-						<Button variant='ghost' onClick={onClose}>
-							Cancel
-						</Button>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
+                    <ModalFooter>
+                        <Button
+                            colorScheme='blue'
+                            mr={3}
+                            onClick={() => handleUpdateUserPhoto(user._id, updatedUser)}
+                        >
+                            Update
+                        </Button>
+                        <Button variant='ghost' onClick={onClose}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Container>
     )
 }
