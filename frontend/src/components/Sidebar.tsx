@@ -31,17 +31,33 @@ interface LinkItemProps {
   icon: IconType,
   url: String
 }
-const LinkItems: Array<LinkItemProps> = [
+let LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, url: "/dashboard"},
   { name: 'Trending', icon: FiTrendingUp, url: "#" },
-  { name: 'Explore', icon: FiCompass, url: "#" },
+  { name: 'Models', icon: FiCompass, url: "#" },
+  { name: 'Agencies', icon: FiCompass, url: "#" },
   { name: 'Favourites', icon: FiStar, url: "#" },
   { name: 'Settings', icon: FiSettings, url: "#" },
 ]
 
 export default function SimpleSidebar({ user }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  console.log(user.type);
+  switch(user.type) {
+    case 'model':
+      LinkItems = LinkItems.filter((item) => {
+        return item.name != "Models" && user.type == 'model'
+      })
+      break;
+    case 'agency':
+      LinkItems = LinkItems.filter((item) => {
+        return item.name != "Agencies" && user.type == 'agency'
+      })
+      break;
+  }
+  
+  // LinkItems = LinkItems.filter((item) => {
+  //   return item.name == "Agencies" && user.type == 'agency'
+  // })
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.800')}>
       <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />

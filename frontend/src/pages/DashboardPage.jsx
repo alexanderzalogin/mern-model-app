@@ -61,7 +61,7 @@ const DashboardPage = () => {
                         "nav footer"`}
                 gridTemplateRows={'1fr 80px'}
                 gridTemplateColumns={'150px 1fr'}
-                h='800px'
+                minH='200vh'
                 gap='1'
                 color='blackAlpha.700'
                 fontWeight='bold'
@@ -95,7 +95,7 @@ const DashboardPage = () => {
                     <Box pos="relative" w="100%" h="200px" bg='gray.700' borderRadius='2xl'>
                         <Box borderRadius='2xl' bg='gray.700' p="2">
                             Profile
-                            <Text>
+                            <Text fontSize="sm">
                                 {userTypesEnum.map((type) => (
                                     (type.value == user.type ? type.label : '')
                                 ))}

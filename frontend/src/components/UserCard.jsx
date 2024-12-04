@@ -110,7 +110,6 @@ const UserCard = ({ user }) => {
 
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
-
 				<ModalContent>
 					<ModalHeader>Update User</ModalHeader>
 					<ModalCloseButton />
