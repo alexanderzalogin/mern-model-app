@@ -1,4 +1,5 @@
-import { Container, Grid, GridItem, Image, Box, HStack } from "@chakra-ui/react";
+import { Container, Grid, GridItem, Image, Box, HStack, VStack, Text, Badge, Icon } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/user";
@@ -60,11 +61,19 @@ const DashboardPage = () => {
                         </Box>
                         <Box borderRadius='2xl' bg='gray.800' pos="absolute" top="99%" left="50%" color="white" transform="translate(-50%,-50%)" h="100px" width="95%">
                             <HStack>
-                                <Box w={24}>
+                                <Box w={24} pos="relative">
                                     <Image borderRadius='full' src={user.image} alt={user.name} h={24} w={24} objectFit='cover' p="2" />
+
+                                    <EditIcon pos="absolute" top="72%" left="72%" size="sm" variant="solid" colorPalette="teal">
+
+                                    </EditIcon>
+
                                 </Box>
                                 <Box>
-                                    {user.name} {user.email}
+                                    <VStack alignItems="start">
+                                        <Text fontSize='md' as='i'>{user.name}</Text>
+                                        <Text fontSize='sm' as='samp'>{user.email}</Text>
+                                    </VStack>
                                 </Box>
                             </HStack>
                         </Box>
