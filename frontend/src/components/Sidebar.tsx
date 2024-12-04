@@ -28,18 +28,20 @@ import { ReactText } from 'react'
 
 interface LinkItemProps {
   name: string
-  icon: IconType
+  icon: IconType,
+  url: String
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
+  { name: 'Home', icon: FiHome, url: "/dashboard"},
+  { name: 'Trending', icon: FiTrendingUp, url: "#" },
+  { name: 'Explore', icon: FiCompass, url: "#" },
+  { name: 'Favourites', icon: FiStar, url: "#" },
+  { name: 'Settings', icon: FiSettings, url: "#" },
 ]
 
-export default function SimpleSidebar() {
+export default function SimpleSidebar({ user }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  console.log(user.type);
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.800')}>
       <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
@@ -83,8 +85,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
+        <NavItem key={link.name} icon={link.icon} url={link.url}>
+            {link.name}
         </NavItem>
       ))}
     </Box>
@@ -93,13 +95,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
 interface NavItemProps extends FlexProps {
   icon: IconType
+  url: String
   children: ReactText
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, url, children, ...rest }: NavItemProps) => {
   return (
     <Box
       as="a"
-      href="#"
+      href={url.toString()}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}>
       <Flex

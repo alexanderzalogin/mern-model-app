@@ -79,7 +79,7 @@ const DashboardPage = () => {
                     color='white'
                     fontSize='0.9rem'
                 >
-                    <Sidebar>
+                    <Sidebar user={user}>
                     </Sidebar>
                 </GridItem>
                 <GridItem
