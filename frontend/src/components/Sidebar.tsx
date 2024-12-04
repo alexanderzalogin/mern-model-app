@@ -45,12 +45,12 @@ export default function SimpleSidebar({ user }) {
   switch(user.type) {
     case 'model':
       LinkItems = LinkItems.filter((item) => {
-        return item.name != "Models" && user.type == 'model'
+        return item.name != "Models"
       })
       break;
     case 'agency':
       LinkItems = LinkItems.filter((item) => {
-        return item.name != "Agencies" && user.type == 'agency'
+        return item.name != "Agencies"
       })
       break;
   }
