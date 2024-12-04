@@ -1,4 +1,24 @@
-import { Container, Grid, GridItem, Image, Box, HStack, VStack, Text, Badge, Icon } from "@chakra-ui/react";
+import { 
+    Container, 
+    Grid, 
+    GridItem, 
+    Image, 
+    Box, 
+    HStack, 
+    VStack, 
+    Text, 
+    Button, 
+    Modal,
+    ModalOverlay,
+    ModalBody,
+    ModalFooter,
+    ModalCloseButton,
+    ModalContent,
+    ModalHeader,
+    useDisclosure,
+    Input,
+    useToast
+} from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
@@ -10,6 +30,33 @@ const DashboardPage = () => {
     // const [user, setUser] = useState()
 
     const user = JSON.parse(localStorage.getItem("currentUser"));
+    const toast = useToast();
+    const [updatedUser, setupdatedUser] = useState(user);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { updateUserPhoto } = useUserStore();
+
+    const handleUpdateUserPhoto = async (uid, updatedUser) => {
+		const { success, message } = await updateUserPhoto(uid, updatedUser);
+		onClose();
+		if (!success) {
+			toast({
+				title: "Error",
+				description: message,
+				status: "error",
+				duration: 3000,
+				isClosable: true,
+			});
+		} else {
+			toast({
+				title: "Success",
+				description: "User photo updated successfully",
+				status: "success",
+				duration: 3000,
+				isClosable: true,
+			});
+            console.log(updatedUser.image);
+		}
+	};
     // useEffect(() => {
     //     const fetchUser = async (token) => {
     //         const response = await getUser(token)
@@ -63,11 +110,9 @@ const DashboardPage = () => {
                             <HStack>
                                 <Box w={24} pos="relative">
                                     <Image borderRadius='full' src={user.image} alt={user.name} h={24} w={24} objectFit='cover' p="2" />
-
-                                    <EditIcon pos="absolute" top="72%" left="72%" size="sm" variant="solid" colorPalette="teal">
-
-                                    </EditIcon>
-
+                                        
+                                            <EditIcon onClick={onOpen} pos="absolute" top="72%" left="72%" size="sm" />
+                                    
                                 </Box>
                                 <Box>
                                     <VStack alignItems="start">
@@ -91,6 +136,36 @@ const DashboardPage = () => {
                     Footer
                 </GridItem>
             </Grid>
+            <Modal isOpen={isOpen} onClose={onClose}>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalHeader>Update Profile Photo</ModalHeader>
+					<ModalCloseButton />
+					<ModalBody>
+						<VStack spacing={4}>
+							<Input
+								placeholder='Image URL'
+								name='image'
+								value={updatedUser.photo ? updatedUser.photo : user.image}
+								onChange={(e) => setupdatedUser({ photo: e.target.value })}
+							/>
+						</VStack>
+					</ModalBody>
+
+					<ModalFooter>
+						<Button
+							colorScheme='blue'
+							mr={3}
+							onClick={() => handleUpdateUserPhoto(user._id, updatedUser)}
+						>
+							Update
+						</Button>
+						<Button variant='ghost' onClick={onClose}>
+							Cancel
+						</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
         </Container>
     )
 }

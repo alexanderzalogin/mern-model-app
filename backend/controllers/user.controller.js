@@ -92,6 +92,7 @@ export const getUser = async (req, res) => {
             success: true,
             message: "User fetched successfully",
             user: {
+                _id: user._id,
                 name: user.name,
                 type: user.type,
                 email: user.email,
@@ -160,5 +161,25 @@ export const deleteUser = async (req, res) => {
         res.status(200).json({ success: true, message: "User deleted" });
     } catch (error) {
         res.status(500).json({ success: false, message: "Server error" });
+    }
+}
+
+export const updateUserPhoto = async (req, res) => {
+    const { id } = req.params;
+
+    const photo = req.body.photo;
+    console.log(photo);
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ success: false, message: "Invalid user id" });
+    }
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(id, {
+                 image: photo
+          }, { new: true });
+        res.status(200).json({ success: true, data: updatedUser });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 }
