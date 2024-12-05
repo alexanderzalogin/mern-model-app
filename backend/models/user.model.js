@@ -2,14 +2,10 @@ import mongoose from "mongoose";
 import validator from "validator"
 
 const userSchema = mongoose.Schema({
-    name: {
+    full_name: {
         type: String,
         required: true,
         trim: true
-    },
-    type: {
-        type: String,
-        required: true
     },
     email: {
         type: String,
@@ -27,11 +23,6 @@ const userSchema = mongoose.Schema({
         required: true,
         type: String,
         minLength: 6,
-    },
-    image: {
-        type: String,
-        required: true,
-        trim: true
     },
     token: {
         type: String

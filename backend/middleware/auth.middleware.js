@@ -1,11 +1,14 @@
+import User from '../models/user.model.js';
+
 export const auth = function(req, res, next) {
-    const token = req.header('auth-token');
+    const token = req.headers["x-token"];
     if (!token) return res.status(401).send('Access denied');
 
     try {
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = verified;
-        next();
+        const user = User.findOne({ token });
+        if (user) {
+            next();
+        }
     } catch (err) {
         res.status(400).send('Invalid token');
     }

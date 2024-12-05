@@ -5,9 +5,9 @@ import CryptoJS from "crypto-js";
 
 export const signupUser = async (req, res) => {
     try {
-        const { email, password, confirmPassword, type, image, name } = req.body;
+        const { email, password, confirmPassword, type, full_name } = req.body;
 
-        if (!email || !password || !confirmPassword || !type || !image || !name) {
+        if (!email || !password || !confirmPassword || !full_name) {
             return res.status(400).json({ success: false, message: "Please provide all fields" });
         }
 
@@ -30,11 +30,11 @@ export const signupUser = async (req, res) => {
         }
         const hashedPassword = await bcryptjs.hash(password, 8);
 
-        const newUser = new User({ email, password: hashedPassword, type, image, name });
+        const newUser = new User({ email, password: hashedPassword, full_name });
         const savedUser = await newUser.save();
         res
             .status(201)
-            .json({ message: "User signed in successfully", success: true, savedUser });
+            .json({ message: "User signed up successfully", success: true, savedUser });
     } catch (error) {
         res.status(500).json({ success: false, message: "Server error" });
     }
@@ -94,9 +94,7 @@ export const getUser = async (req, res) => {
             user: {
                 _id: user._id,
                 name: user.name,
-                type: user.type,
                 email: user.email,
-                image: user.image
             }
         });
     } catch (error) {
@@ -117,7 +115,7 @@ export const getUsers = async (req, res) => {
 export const createUser = async (req, res) => {
     const user = req.body;
 
-    if (!user.name || !user.type || !user.email || !user.image) {
+    if ( !user.name || !user.email ) {
         return res.status(400).json({ success: false, message: "Please provide all fields" });
     }
 
