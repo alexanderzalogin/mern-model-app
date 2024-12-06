@@ -108,7 +108,7 @@ const DashboardPage = () => {
                         <Box borderRadius='2xl' bg='gray.800' pos="absolute" top="99%" left="50%" color="white" transform="translate(-50%,-50%)" h="100px" width="95%">
                             <HStack>
                                 <Box w={24} pos="relative">
-                                    <Image borderRadius='full' src={user.photo} alt={user.full_name} h={24} w={24} objectFit='cover' p="2" />
+                                    <Image borderRadius='full' src={agency ? agency.photo : model.photo} alt={user.full_name} h={24} w={24} objectFit='cover' p="2" />
                                     <EditIcon _hover={{ cursor: "pointer" }} onClick={onOpen} pos="absolute" top="72%" left="72%" size="sm" />
                                 </Box>
                                 <Box>
