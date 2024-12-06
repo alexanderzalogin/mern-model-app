@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage"
 import SignupPage from "./pages/SignupPage"
 import ProtectedRoute from "./components/ProtectedRoute"
 import DashboardPage from "./pages/DashboardPage"
+import CompleteProfilePage from "./pages/CompleteProfilePage"
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path='/create' element={<CreatePage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignupPage />} />
+        <Route path='/complete-profile' element={<CompleteProfilePage />} />
       </Routes>
     </Box>
   );

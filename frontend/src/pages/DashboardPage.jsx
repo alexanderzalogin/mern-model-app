@@ -104,12 +104,12 @@ const DashboardPage = () => {
                         <Box borderRadius='2xl' bg='gray.800' pos="absolute" top="99%" left="50%" color="white" transform="translate(-50%,-50%)" h="100px" width="95%">
                             <HStack>
                                 <Box w={24} pos="relative">
-                                    <Image borderRadius='full' src={user.image} alt={user.name} h={24} w={24} objectFit='cover' p="2" />
+                                    <Image borderRadius='full' src={user.photo} alt={user.full_name} h={24} w={24} objectFit='cover' p="2" />
                                     <EditIcon _hover={{ cursor: "pointer" }} onClick={onOpen} pos="absolute" top="72%" left="72%" size="sm" />
                                 </Box>
                                 <Box>
                                     <VStack alignItems="start">
-                                        <Text fontSize='md' as='i'>{user.name}</Text>
+                                        <Text fontSize='md' as='i'>{user.full_name}</Text>
                                         <Text fontSize='sm' as='samp'>{user.email}</Text>
                                     </VStack>
                                 </Box>
@@ -138,8 +138,8 @@ const DashboardPage = () => {
                         <VStack spacing={4}>
                             <Input
                                 placeholder='Image URL'
-                                name='image'
-                                value={updatedUser.photo ? updatedUser.photo : user.image}
+                                name='photo'
+                                value={updatedUser.photo ? updatedUser.photo : user.photo}
                                 onChange={(e) => setupdatedUser({ photo: e.target.value })}
                             />
                         </VStack>

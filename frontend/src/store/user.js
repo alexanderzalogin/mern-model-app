@@ -1,7 +1,4 @@
 import { create } from "zustand";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export const useUserStore = create((set) => ({
 	users: [],
@@ -10,7 +7,7 @@ export const useUserStore = create((set) => ({
 		if (!newUser.full_name || !newUser.email) {
 			return { success: false, message: "Please fill in all fields." };
 		}
-		const res = await fetch(process.env.API_URL + "users", {
+		const res = await fetch("/api/v1/users", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -22,12 +19,12 @@ export const useUserStore = create((set) => ({
 		return { success: true, message: "User created successfully" };
 	},
 	fetchUsers: async () => {
-		const res = await fetch(process.env.API_URL + "users");
+		const res = await fetch("/api/v1/users");
 		const data = await res.json();
 		set({ users: data.data });
 	},
 	deleteUser: async (uid) => {
-		const res = await fetch(process.env.API_URL + `users/${uid}`, {
+		const res = await fetch(`/api/v1/users/${uid}`, {
 			method: "DELETE",
 		});
 		const data = await res.json();
@@ -38,7 +35,7 @@ export const useUserStore = create((set) => ({
 		return { success: true, message: data.message };
 	},
 	updateUser: async (uid, updatedUser) => {
-		const res = await fetch(process.env.API_URL + `users/${uid}`, {
+		const res = await fetch(`/api/v1/users/${uid}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
@@ -56,7 +53,7 @@ export const useUserStore = create((set) => ({
 		return { success: true, message: data.message };
 	},
 	loginUser: async (email, password) => {
-		const res = await fetch(process.env.API_URL + `users/login`, {
+		const res = await fetch(`/api/v1/users/login`, {
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -68,13 +65,13 @@ export const useUserStore = create((set) => ({
 
 		return { success: true, data: data };
 	},
-	signupUser: async (email, password, confirmPassword, type, image, name) => {
-		const res = await fetch(process.env.API_URL + `users/signup`, {
+	signupUser: async (email, password, confirmPassword, full_name) => {
+		const res = await fetch(`/api/v1/users/signup`, {
 			headers: {
 				"Content-Type": "application/json",
 			},
 			method: "POST",
-			body: JSON.stringify({ email, password, confirmPassword, type, image, name })
+			body: JSON.stringify({ email, password, confirmPassword, full_name })
 		});
 		const data = await res.json();
 		if (!data.success) return { success: false, message: data.message };
@@ -82,7 +79,7 @@ export const useUserStore = create((set) => ({
 		return { success: true, data: data.message };
 	},
 	getUser: async (token) => {
-		const res = await fetch(process.env.API_URL + `users/user`, {
+		const res = await fetch(`/api/v1/users/user`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
@@ -96,7 +93,7 @@ export const useUserStore = create((set) => ({
 		return { success: true, data: data };
 	},
 	logoutUser: async (token) => {
-		const res = await fetch(process.env.API_URL + `users/login`, {
+		const res = await fetch(`/api/v1/users/login`, {
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -109,7 +106,7 @@ export const useUserStore = create((set) => ({
 		return { success: true, data: data };
 	},
 	updateUserPhoto: async (uid, updatedUserPhoto) => {
-		const res = await fetch(process.env.API_URL + `users/${uid}/photo`, {
+		const res = await fetch(`/api/v1/users/${uid}/photo`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",

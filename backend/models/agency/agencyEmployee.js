@@ -9,10 +9,10 @@ const agencyEmployeeSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Agency"
     }
-}, { 
-    timestamps: true 
+}, {
+    timestamps: true
 })
 
 const AgencyEmployee = mongoose.model("AgencyEmployee", agencyEmployeeSchema);
 
-module.exports = AgencyEmployee;
+export default AgencyEmployee;

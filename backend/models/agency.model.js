@@ -19,4 +19,4 @@ const AgencySchema = new mongoose.Schema({
 
 const Agency = mongoose.model("Agency", AgencySchema);
 
-module.exports = Agency;
+export default Agency;

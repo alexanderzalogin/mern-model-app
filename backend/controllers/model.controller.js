@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Model from '../models/model.model.js';
+import User from '../models/user.model.js';
 
 export const getModels = async (req, res) => {
     try {
@@ -12,9 +13,10 @@ export const getModels = async (req, res) => {
 }
 
 export const createModel = async (req, res) => {
-    const model = req.body;
+    const model = req.body.model;
+    const user_id = req.body.user_id;
 
-    if (!model.user_id || !model.description || !model.photo) {
+    if (!model.description || !model.photo) {
         return res.status(400).json({ success: false, message: "Please provide all fields" });
     }
 
@@ -22,7 +24,10 @@ export const createModel = async (req, res) => {
 
     try {
         await newModel.save();
-        res.status(201).json({ success: true, data: newModel });
+        const user = await User.findByIdAndUpdate(user_id, {
+            is_profile_complete: true
+        }, { new: true });
+        res.status(201).json({ success: true, data: { user: user, model: newModel } });
     } catch (error) {
         console.log('Error in create model: ', error.message);
         res.status(500).json({ success: false, message: "Server error" });
@@ -72,8 +77,8 @@ export const updateModelPhoto = async (req, res) => {
 
     try {
         const updatedModel = await User.findByIdAndUpdate(id, {
-                 image: photo
-          }, { new: true });
+            image: photo
+        }, { new: true });
         res.status(200).json({ success: true, data: updatedModel });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

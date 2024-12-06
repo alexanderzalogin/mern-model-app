@@ -46,7 +46,11 @@ const Login = () => {
                 expires: inFifteenMinutes
             });
             localStorage.setItem('currentUser', JSON.stringify(user));
-            window.location.href = '/dashboard';
+            if (user.is_profile_complete) {
+                window.location.href = '/dashboard';
+            } else {
+                window.location.href = '/complete-profile';
+            }
         }
         setLoading(false);
     }

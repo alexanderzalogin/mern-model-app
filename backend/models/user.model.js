@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { type } from "os";
 import validator from "validator"
 
 const userSchema = mongoose.Schema({
@@ -26,6 +27,10 @@ const userSchema = mongoose.Schema({
     },
     token: {
         type: String
+    },
+    is_profile_complete: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

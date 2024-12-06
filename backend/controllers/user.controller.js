@@ -5,7 +5,7 @@ import CryptoJS from "crypto-js";
 
 export const signupUser = async (req, res) => {
     try {
-        const { email, password, confirmPassword, type, full_name } = req.body;
+        const { email, password, confirmPassword, full_name } = req.body;
 
         if (!email || !password || !confirmPassword || !full_name) {
             return res.status(400).json({ success: false, message: "Please provide all fields" });
@@ -93,8 +93,9 @@ export const getUser = async (req, res) => {
             message: "User fetched successfully",
             user: {
                 _id: user._id,
-                name: user.name,
+                full_name: user.full_name,
                 email: user.email,
+                is_profile_complete: user.is_profile_complete,
             }
         });
     } catch (error) {
@@ -115,7 +116,7 @@ export const getUsers = async (req, res) => {
 export const createUser = async (req, res) => {
     const user = req.body;
 
-    if ( !user.name || !user.email ) {
+    if (!user.name || !user.email) {
         return res.status(400).json({ success: false, message: "Please provide all fields" });
     }
 
@@ -174,8 +175,8 @@ export const updateUserPhoto = async (req, res) => {
 
     try {
         const updatedUser = await User.findByIdAndUpdate(id, {
-                 image: photo
-          }, { new: true });
+            image: photo
+        }, { new: true });
         res.status(200).json({ success: true, data: updatedUser });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

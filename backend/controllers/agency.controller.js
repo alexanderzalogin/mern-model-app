@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Agency from '../models/agency.model.js';
+import User from '../models/user.model.js';
 
 export const getAgencies = async (req, res) => {
     try {
@@ -12,7 +13,8 @@ export const getAgencies = async (req, res) => {
 }
 
 export const createAgency = async (req, res) => {
-    const agency = req.body;
+    const agency = req.body.agency;
+    const user_id = req.body.user_id;
 
     if (!agency.name || !agency.description || !agency.photo) {
         return res.status(400).json({ success: false, message: "Please provide all fields" });
@@ -22,7 +24,10 @@ export const createAgency = async (req, res) => {
 
     try {
         await newAgency.save();
-        res.status(201).json({ success: true, data: newAgency });
+        const user = await User.findByIdAndUpdate(user_id, {
+            is_profile_complete: true
+        }, { new: true });
+        res.status(201).json({ success: true, data: { user: user, agency: newAgency } });
     } catch (error) {
         console.log('Error in create agency: ', error.message);
         res.status(500).json({ success: false, message: "Server error" });
@@ -72,8 +77,8 @@ export const updateAgencyPhoto = async (req, res) => {
 
     try {
         const updatedAgency = await User.findByIdAndUpdate(id, {
-                 image: photo
-          }, { new: true });
+            image: photo
+        }, { new: true });
         res.status(200).json({ success: true, data: updatedAgency });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

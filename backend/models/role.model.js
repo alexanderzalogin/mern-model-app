@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
 const RoleSchema = mongoose.Schema({
+    id: {
+        type: Number
+    },
     name: {
         type: String,
         trim: true

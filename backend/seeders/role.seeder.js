@@ -6,9 +6,11 @@ dotenv.config()
 
 const roles = [
     new Role({
+        id: 1,
         name: "agency",
     }),
     new Role({
+        id: 2,
         name: "model",
     })
 ]
@@ -22,7 +24,7 @@ mongoose
     .then(() => {
         console.log("connected to db in development environment");
     });
-    
+
 Role.collection
     .drop()
     .then(() => console.log("Drop"))
