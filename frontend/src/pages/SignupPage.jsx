@@ -11,7 +11,6 @@ import {
 import { useNavigate, Link } from 'react-router-dom';
 import { useUserStore } from "../store/user";
 import { useState } from 'react';
-import userTypesEnum from "../enums/userTypes.enum";
 
 const Signup = () => {
     const [email, setEmail] = useState();

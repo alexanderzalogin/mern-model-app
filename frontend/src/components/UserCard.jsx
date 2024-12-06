@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { useUserStore } from "../store/user";
 import { useState } from "react";
-import userTypesEnum from "../enums/userTypes.enum";
+import userRolesEnum from "../enums/userRoles.enum";
 
 const UserCard = ({ user }) => {
 	const [updatedUser, setUpdatedUser] = useState(user);
@@ -126,7 +126,7 @@ const UserCard = ({ user }) => {
                                 value={updatedUser.type}
 								onChange={(e) => setUpdatedUser({ ...updatedUser, type: e.target.value })}
                             >
-                                {userTypesEnum.map((type) => (
+                                {userRolesEnum.map((type) => (
                                     <option value={type.value}>{type.label}</option>
                                 ))}
                             </Select> 

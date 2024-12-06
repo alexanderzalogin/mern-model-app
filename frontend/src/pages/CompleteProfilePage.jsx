@@ -12,7 +12,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useAgencyStore } from '../store/agency';
 import { useModelStore } from '../store/model';
-import userTypesEnum from '../enums/userTypes.enum'
+import userRolesEnum from '../enums/userRoles.enum'
 
 const CompleteProfilePage = () => {
     const [role, setRole] = useState();
@@ -95,7 +95,7 @@ const CompleteProfilePage = () => {
                             onChange={(e) => setRole(e.target.value)}
                             w={{ base: '80%', md: '40%' }}
                         >
-                            {userTypesEnum.map((type) => (
+                            {userRolesEnum.map((type) => (
                                 <option value={type.value}>{type.label}</option>
                             ))}
                         </Select>

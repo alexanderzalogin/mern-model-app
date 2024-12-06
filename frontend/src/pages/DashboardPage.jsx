@@ -22,7 +22,7 @@ import {
 import { EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useUserStore } from "../store/user";
-import userTypesEnum from "../enums/userTypes.enum";
+import userRolesEnum from "../enums/userRoles.enum";
 import Sidebar from "../components/Sidebar";
 
 const DashboardPage = () => {
@@ -100,7 +100,7 @@ const DashboardPage = () => {
                         <Box borderRadius='2xl' bg='gray.700' p="2">
                             Profile
                             <Text fontSize="sm">
-                                {userTypesEnum.map((type) => (
+                                {userRolesEnum.map((type) => (
                                     (type.id == user_role.role_id ? type.label : '')
                                 ))}
                             </Text>
