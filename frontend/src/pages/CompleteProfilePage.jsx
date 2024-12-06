@@ -1,15 +1,26 @@
 import {
     Button,
+    Avatar,
     Flex,
     FormControl,
     Input,
     useToast,
     Spinner,
-    Select
+    FormHelperText,
+    FormLabel,
+    Text,
+    Select,
+    Box
 } from '@chakra-ui/react'
+import {
+    AutoComplete,
+    AutoCompleteInput,
+    AutoCompleteItem,
+    AutoCompleteList,
+} from "@choc-ui/chakra-autocomplete";
 
 import { useNavigate, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAgencyStore } from '../store/agency';
 import { useModelStore } from '../store/model';
 import userRolesEnum from '../enums/userRoles.enum'
@@ -25,9 +36,14 @@ const CompleteProfilePage = () => {
     const toast = useToast();
 
     const { createAgency } = useAgencyStore();
+    const { getAgencies, agencies } = useAgencyStore();
     const { createModel } = useModelStore();
 
     const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    useEffect(() => {
+        getAgencies();
+    }, [getAgencies]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -111,6 +127,37 @@ const CompleteProfilePage = () => {
                                 required
                                 w={{ base: '80%', md: '40%' }}
                             />
+                        }
+                        {role == "model" &&
+                            <Box w={{ base: '80%', md: '40%' }}>
+                                <AutoComplete
+                                    openOnFocus
+                                >
+                                    <AutoCompleteInput variant="filled"
+                                        size="lg"
+                                        id="name"
+                                        name="name"
+                                        placeholder="Name"
+                                        type="name"
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                    />
+                                    <AutoCompleteList>
+                                        {agencies.map((agency, oid) => (
+                                            <AutoCompleteItem
+                                                key={`option-${oid}`}
+                                                value={agency.name}
+                                                textTransform="capitalize"
+                                                align="center"
+                                                onChange={(e) => setName(e.target.value)}
+                                            >
+                                                <Avatar size="sm" name={agency.name} src={agency.photo} />
+                                                <Text ml="4">{agency.name}</Text>
+                                            </AutoCompleteItem>
+                                        ))}
+                                    </AutoCompleteList>
+                                </AutoComplete>
+                            </Box>
                         }
                         <Input
                             size="lg"
