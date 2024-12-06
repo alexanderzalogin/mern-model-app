@@ -27,6 +27,10 @@ import Sidebar from "../components/Sidebar";
 
 const DashboardPage = () => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
+    const user_role = JSON.parse(localStorage.getItem("currentUserRole"));
+    console.log(user_role.role_id);
+    const agency = JSON.parse(localStorage.getItem("agency"));
+    const model = JSON.parse(localStorage.getItem("model"));
     const toast = useToast();
     const [updatedUser, setupdatedUser] = useState(user);
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -79,7 +83,7 @@ const DashboardPage = () => {
                     color='white'
                     fontSize='0.9rem'
                 >
-                    <Sidebar user={user}>
+                    <Sidebar user={user} user_role={user_role}>
                     </Sidebar>
                 </GridItem>
                 <GridItem
@@ -97,7 +101,7 @@ const DashboardPage = () => {
                             Profile
                             <Text fontSize="sm">
                                 {userTypesEnum.map((type) => (
-                                    (type.value == user.type ? type.label : '')
+                                    (type.id == user_role.role_id ? type.label : '')
                                 ))}
                             </Text>
                         </Box>

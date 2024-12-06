@@ -12,6 +12,10 @@ const roles = [
     new Role({
         id: 2,
         name: "model",
+    }),
+    new Role({
+        id: 3,
+        name: "manager",
     })
 ]
 

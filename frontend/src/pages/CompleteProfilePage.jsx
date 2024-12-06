@@ -44,9 +44,12 @@ const CompleteProfilePage = () => {
             } else {
                 const agency = agencyResult.data.agency;
                 const user = agencyResult.data.user;
+                const user_role = agencyResult.data.user_role;
 
                 localStorage.setItem('agency', JSON.stringify(agency));
                 localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.setItem('currentUserRole', JSON.stringify(user_role));
+
                 window.location.href = '/dashboard';
             }
             setLoading(false);
@@ -61,11 +64,13 @@ const CompleteProfilePage = () => {
                     isClosable: true,
                 });
             } else {
-                const model = modelResult.data.data.model;
-                const user = modelResult.data.data.user;
+                const model = modelResult.data.model;
+                const user = modelResult.data.user;
+                const user_role = modelResult.data.user_role;
 
                 localStorage.setItem('model', JSON.stringify(model));
                 localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.setItem('currentUserRole', JSON.stringify(user_role));
 
                 window.location.href = '/dashboard';
             }

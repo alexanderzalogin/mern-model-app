@@ -6,8 +6,7 @@ const userRoleSchema = new mongoose.Schema({
         ref: "User"
     },
     role_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "Role"
+        type: Number,
     }
 }, { 
     timestamps: true 

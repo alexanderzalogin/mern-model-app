@@ -1,7 +1,7 @@
 import { Button, Container, Flex, HStack, Text, useColorMode } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-import { CheckCircleIcon, PlusSquareIcon, UnlockIcon } from "@chakra-ui/icons";
+import { PlusSquareIcon } from "@chakra-ui/icons";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import Cookies from "js-cookie"

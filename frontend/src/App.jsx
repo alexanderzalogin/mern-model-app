@@ -8,6 +8,7 @@ import SignupPage from "./pages/SignupPage"
 import ProtectedRoute from "./components/ProtectedRoute"
 import DashboardPage from "./pages/DashboardPage"
 import CompleteProfilePage from "./pages/CompleteProfilePage"
+import ProfileCompleteProtectedRoute from "./components/ProfileCompleteProtectedRoute"
 
 const App = () => {
   return (
@@ -23,7 +24,13 @@ const App = () => {
         <Route path='/create' element={<CreatePage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignupPage />} />
-        <Route path='/complete-profile' element={<CompleteProfilePage />} />
+        <Route path='/complete-profile' element={
+          <ProtectedRoute>
+            <ProfileCompleteProtectedRoute>
+              <CompleteProfilePage />
+            </ProfileCompleteProtectedRoute>
+          </ProtectedRoute>
+        } />
       </Routes>
     </Box>
   );

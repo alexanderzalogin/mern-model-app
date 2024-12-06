@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcryptjs from "bcryptjs";
 import User from '../models/user.model.js';
 import CryptoJS from "crypto-js";
+import UserRole from "../models/user/userRole.model.js";
 
 export const signupUser = async (req, res) => {
     try {
@@ -82,6 +83,7 @@ export const getUser = async (req, res) => {
         }
 
         const user = await User.findOne({ token });
+        const user_role = await UserRole.findOne({ user_id: user._id })
         if (!user) {
             return res
                 .status(400)
@@ -96,7 +98,8 @@ export const getUser = async (req, res) => {
                 full_name: user.full_name,
                 email: user.email,
                 is_profile_complete: user.is_profile_complete,
-            }
+            },
+            user_role: user_role
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

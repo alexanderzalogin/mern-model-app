@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Agency from '../models/agency.model.js';
 import User from '../models/user.model.js';
+import UserRole from "../models/user/userRole.model.js";
 
 export const getAgencies = async (req, res) => {
     try {
@@ -27,7 +28,8 @@ export const createAgency = async (req, res) => {
         const user = await User.findByIdAndUpdate(user_id, {
             is_profile_complete: true
         }, { new: true });
-        res.status(201).json({ success: true, data: { user: user, agency: newAgency } });
+        const userRole = await UserRole.create({user_id: user_id, role_id: 1})
+        res.status(201).json({ success: true, data: { user: user, agency: newAgency, user_role: userRole } });
     } catch (error) {
         console.log('Error in create agency: ', error.message);
         res.status(500).json({ success: false, message: "Server error" });

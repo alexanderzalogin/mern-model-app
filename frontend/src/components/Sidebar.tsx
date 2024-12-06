@@ -40,15 +40,15 @@ let LinkItems: Array<LinkItemProps> = [
   { name: 'Settings', icon: FiSettings, url: "#" },
 ]
 
-export default function SimpleSidebar({ user }) {
+export default function SimpleSidebar({ user, user_role }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  switch(user.type) {
-    case 'model':
+  switch(user_role.role_id) {
+    case 2:
       LinkItems = LinkItems.filter((item) => {
         return item.name != "Models"
       })
       break;
-    case 'agency':
+    case 1:
       LinkItems = LinkItems.filter((item) => {
         return item.name != "Agencies"
       })

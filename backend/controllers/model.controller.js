@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Model from '../models/model.model.js';
 import User from '../models/user.model.js';
+import UserRole from "../models/user/userRole.model.js";
 
 export const getModels = async (req, res) => {
     try {
@@ -27,7 +28,8 @@ export const createModel = async (req, res) => {
         const user = await User.findByIdAndUpdate(user_id, {
             is_profile_complete: true
         }, { new: true });
-        res.status(201).json({ success: true, data: { user: user, model: newModel } });
+        const userRole = await UserRole.create({user_id: user_id, role_id: 2})
+        res.status(201).json({ success: true, data: { user: user, model: newModel, user_role: userRole } });
     } catch (error) {
         console.log('Error in create model: ', error.message);
         res.status(500).json({ success: false, message: "Server error" });

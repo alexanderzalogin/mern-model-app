@@ -42,10 +42,14 @@ const Login = () => {
             });
             const userResult = await getUser(token);
             const user = userResult.data.user;
+            const user_role = userResult.data.user_role;
+
             Cookies.set("user", JSON.stringify(user), {
                 expires: inFifteenMinutes
             });
             localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('currentUserRole', JSON.stringify(user_role));
+            
             if (user.is_profile_complete) {
                 window.location.href = '/dashboard';
             } else {
