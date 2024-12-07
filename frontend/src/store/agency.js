@@ -20,6 +20,7 @@ export const useAgencyStore = create((set) => ({
     getAgencies: async () => {
 		const res = await fetch("/api/v1/agencies");
 		const data = await res.json();
+        console.log(data.data)
 		set({ agencies: data.data });
 	},
 }));

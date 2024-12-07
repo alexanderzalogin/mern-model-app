@@ -1,15 +1,20 @@
 import { Container, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useUserStore } from "../store/user";
-import UserCard from "../components/UserCard";
+import { useAgencyStore } from "../store/agency";
+import { useModelStore } from "../store/model";
+import AgencyCard from "../components/AgencyCard";
+import ModelCard from "../components/ModelCard";
 
 const HomePage = () => {
-    const { fetchUsers, users } = useUserStore();
+    const { getAgencies, agencies } = useAgencyStore();
+    const { getModels, models } = useModelStore();
 
     useEffect(() => {
-        fetchUsers();
-    }, [fetchUsers]);
+        getAgencies();
+        getModels();
+    }, [getAgencies, getModels]);
+    console.log(agencies)
 
     return (
         <Container maxW='container.xl' py={12}>
@@ -33,17 +38,21 @@ const HomePage = () => {
                     spacing={10}
                     w={"full"}
                 >
-                    {users.map((user) => (
-                        <UserCard key={user._id} user={user} />
+                    {agencies?.map((agency) => (
+                        <AgencyCard agency={agency} />
+                    ))}
+                    
+                    {models?.map((model) => (
+                        <ModelCard model={model} />
                     ))}
                 </SimpleGrid>
 
-                {users.length === 0 && (
+                {models?.length === 0 && agencies?.length === 0 && (
                     <Text fontSize='xl' textAlign={"center"} fontWeight='bold' color='gray.500'>
-                        No users found 😢{" "}
-                        <Link to={"/create"}>
+                        Nothing found 😢{" "}
+                        <Link to={"/signup"}>
                             <Text as='span' color='blue.500' _hover={{ textDecoration: "underline" }}>
-                                Create a user
+                                Sign up
                             </Text>
                         </Link>
                     </Text>
