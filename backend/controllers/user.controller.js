@@ -1,8 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
 import bcryptjs from "bcryptjs";
 import User from '../models/user.model.js';
 import CryptoJS from "crypto-js";
 import UserRole from "../models/user/userRole.model.js";
+import Agency from "../models/agency.model.js";
+import AgencyEmployee from "../models/agency/agencyEmployee.js";
+import Model from "../models/model.model.js";
 
 export const signupUser = async (req, res) => {
     try {
@@ -81,9 +84,22 @@ export const getUser = async (req, res) => {
         if (!token) {
             return res.status(400).json({ success: false, message: "Please provide token" });
         }
-
+        let agency = {};
+        let model = {};
         const user = await User.findOne({ token });
         const user_role = await UserRole.findOne({ user_id: user._id })
+        const agency_employee = await AgencyEmployee.findOne({ user_id: user._id });
+        model = await Model.findOne({user_id: user._id});
+        //TODO for modal
+        if (agency_employee) {
+            agency = await Agency.findById(agency_employee.agency_id);
+        }
+        if (!model) {
+            model = {};
+        }
+        console.log(agency);
+        console.log(model);
+
         if (!user) {
             return res
                 .status(400)
@@ -99,7 +115,9 @@ export const getUser = async (req, res) => {
                 email: user.email,
                 is_profile_complete: user.is_profile_complete,
             },
-            user_role: user_role
+            user_role: user_role,
+            agency: agency,
+            model: model
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

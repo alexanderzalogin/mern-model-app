@@ -90,10 +90,12 @@ export const useUserStore = create((set) => ({
 		const data = await res.json();
 		const user = data.user;
 		const user_role = data.user_role;
+		const agency = data.agency;
+		const model = data.model;
 		
 		if (!data.success) return { success: false, message: "Failed to fetch user" };
 
-		return { success: true, data: {user, user_role} };
+		return { success: true, data: {user, user_role, agency, model} };
 	},
 	logoutUser: async (token) => {
 		const res = await fetch(`/api/v1/users/login`, {

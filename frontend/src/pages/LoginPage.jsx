@@ -43,6 +43,8 @@ const Login = () => {
             const userResult = await getUser(token);
             const user = userResult.data.user;
             const user_role = userResult.data.user_role;
+            const agency = userResult.data.agency;
+            const model = userResult.data.model;
 
             Cookies.set("user", JSON.stringify(user), {
                 expires: inFifteenMinutes
@@ -51,6 +53,12 @@ const Login = () => {
             localStorage.setItem('currentUserRole', JSON.stringify(user_role));
             
             if (user.is_profile_complete) {
+                if (agency) {
+                    localStorage.setItem('agency', JSON.stringify(agency));
+                } else if (model){
+                    localStorage.setItem('model', JSON.stringify(model));
+                }
+                
                 window.location.href = '/dashboard';
             } else {
                 window.location.href = '/complete-profile';

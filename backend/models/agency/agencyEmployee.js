@@ -2,12 +2,10 @@ import mongoose from "mongoose";
 
 const agencyEmployeeSchema = new mongoose.Schema({
     user_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "User"
+        type: String,
     },
     agency_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "Agency"
+        type: String,
     }
 }, {
     timestamps: true
