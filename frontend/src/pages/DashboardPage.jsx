@@ -22,11 +22,15 @@ import {
 import { EditIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { useUserStore } from "../store/user";
-import userTypesEnum from "../enums/userTypes.enum";
+import userRolesEnum from "../enums/userRoles.enum";
 import Sidebar from "../components/Sidebar";
 
 const DashboardPage = () => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
+    const user_role = JSON.parse(localStorage.getItem("currentUserRole"));
+    console.log(user_role.role_id);
+    const agency = JSON.parse(localStorage.getItem("agency"));
+    const model = JSON.parse(localStorage.getItem("model"));
     const toast = useToast();
     const [updatedUser, setupdatedUser] = useState(user);
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -79,7 +83,7 @@ const DashboardPage = () => {
                     color='white'
                     fontSize='0.9rem'
                 >
-                    <Sidebar user={user}>
+                    <Sidebar user={user} user_role={user_role}>
                     </Sidebar>
                 </GridItem>
                 <GridItem
@@ -96,20 +100,20 @@ const DashboardPage = () => {
                         <Box borderRadius='2xl' bg='gray.700' p="2">
                             Profile
                             <Text fontSize="sm">
-                                {userTypesEnum.map((type) => (
-                                    (type.value == user.type ? type.label : '')
+                                {userRolesEnum.map((type) => (
+                                    (type.id == user_role.role_id ? type.label : '')
                                 ))}
                             </Text>
                         </Box>
                         <Box borderRadius='2xl' bg='gray.800' pos="absolute" top="99%" left="50%" color="white" transform="translate(-50%,-50%)" h="100px" width="95%">
                             <HStack>
                                 <Box w={24} pos="relative">
-                                    <Image borderRadius='full' src={user.image} alt={user.name} h={24} w={24} objectFit='cover' p="2" />
+                                    <Image borderRadius='full' src={agency ? agency.photo : model.photo} alt={user.full_name} h={24} w={24} objectFit='cover' p="2" />
                                     <EditIcon _hover={{ cursor: "pointer" }} onClick={onOpen} pos="absolute" top="72%" left="72%" size="sm" />
                                 </Box>
                                 <Box>
                                     <VStack alignItems="start">
-                                        <Text fontSize='md' as='i'>{user.name}</Text>
+                                        <Text fontSize='md' as='i'>{user.full_name}</Text>
                                         <Text fontSize='sm' as='samp'>{user.email}</Text>
                                     </VStack>
                                 </Box>
@@ -138,8 +142,8 @@ const DashboardPage = () => {
                         <VStack spacing={4}>
                             <Input
                                 placeholder='Image URL'
-                                name='image'
-                                value={updatedUser.photo ? updatedUser.photo : user.image}
+                                name='photo'
+                                value={updatedUser.photo ? updatedUser.photo : user.photo}
                                 onChange={(e) => setupdatedUser({ photo: e.target.value })}
                             />
                         </VStack>

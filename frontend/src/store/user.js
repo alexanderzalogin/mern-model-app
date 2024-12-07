@@ -4,7 +4,7 @@ export const useUserStore = create((set) => ({
 	users: [],
 	setUsers: (users) => set({ users }),
 	createUser: async (newUser) => {
-		if (!newUser.name || !newUser.type || !newUser.email || !newUser.image) {
+		if (!newUser.full_name || !newUser.email) {
 			return { success: false, message: "Please fill in all fields." };
 		}
 		const res = await fetch("/api/v1/users", {
@@ -65,13 +65,13 @@ export const useUserStore = create((set) => ({
 
 		return { success: true, data: data };
 	},
-	signupUser: async (email, password, confirmPassword, type, image, name) => {
+	signupUser: async (email, password, confirmPassword, full_name) => {
 		const res = await fetch(`/api/v1/users/signup`, {
 			headers: {
 				"Content-Type": "application/json",
 			},
 			method: "POST",
-			body: JSON.stringify({ email, password, confirmPassword, type, image, name })
+			body: JSON.stringify({ email, password, confirmPassword, full_name })
 		});
 		const data = await res.json();
 		if (!data.success) return { success: false, message: data.message };
@@ -88,9 +88,12 @@ export const useUserStore = create((set) => ({
 		});
 
 		const data = await res.json();
+		const user = data.user;
+		const user_role = data.user_role;
+		
 		if (!data.success) return { success: false, message: "Failed to fetch user" };
 
-		return { success: true, data: data };
+		return { success: true, data: {user, user_role} };
 	},
 	logoutUser: async (token) => {
 		const res = await fetch(`/api/v1/users/login`, {

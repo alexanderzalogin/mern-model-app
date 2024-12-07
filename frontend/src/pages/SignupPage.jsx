@@ -11,16 +11,12 @@ import {
 import { useNavigate, Link } from 'react-router-dom';
 import { useUserStore } from "../store/user";
 import { useState } from 'react';
-import userTypesEnum from "../enums/userTypes.enum";
 
 const Signup = () => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
-    const [name, setName] = useState();
-    const [image, setImage] = useState();
-    const [type, setType] = useState();
-    const [error, setError] = useState();
+    const [full_name, setFullName] = useState();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -31,7 +27,7 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const signupResult = await signupUser(email, password, confirmPassword, type, image, name);
+        const signupResult = await signupUser(email, password, confirmPassword, full_name);
         if (!signupResult.success) {
             toast({
                 title: "Error",
@@ -66,20 +62,10 @@ const Signup = () => {
                         <Input
                             placeholder='Full Name'
                             name='name'
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={full_name}
+                            onChange={(e) => setFullName(e.target.value)}
                             w={{ base: '80%', md: '40%' }}
                         />
-                        <Select placeholder='Select type'
-                            name='type'
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
-                            w={{ base: '80%', md: '40%' }}
-                        >
-                            {userTypesEnum.map((type) => (
-                                <option value={type.value}>{type.label}</option>
-                            ))}
-                        </Select>
                         <Input
                             size="lg"
                             id="email"
@@ -111,13 +97,6 @@ const Signup = () => {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             type="password"
                             required
-                            w={{ base: '80%', md: '40%' }}
-                        />
-                        <Input
-                            placeholder='Image URL'
-                            name='image'
-                            value={image}
-                            onChange={(e) => setImage(e.target.value)}
                             w={{ base: '80%', md: '40%' }}
                         />
                         <Button type="submit">

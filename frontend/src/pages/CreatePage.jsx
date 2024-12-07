@@ -1,7 +1,7 @@
 import { Box, Button, Container, Heading, Input, Select, useColorModeValue, useToast, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { useUserStore } from "../store/user";
-import userTypesEnum from "../enums/userTypes.enum";
+import userRolesEnum from "../enums/userRoles.enum";
 
 const CreatePage = () => {
     const [newUser, setNewUser] = useState({
@@ -54,7 +54,7 @@ const CreatePage = () => {
                             value={newUser.type}
                             onChange={(e) => setNewUser({ ...newUser, type: e.target.value })}
                         >
-                            {userTypesEnum.map((type) => (
+                            {userRolesEnum.map((type) => (
                                 <option value={type.value}>{type.label}</option>
                             ))}
                         </Select>

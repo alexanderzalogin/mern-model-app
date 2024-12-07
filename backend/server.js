@@ -5,6 +5,8 @@ import path from "path";
 import { connectDB } from "./config/db.js";
 
 import userRoutes from "./routes/user.route.js";
+import agencyRoutes from "./routes/agency.route.js";
+import modelRoutes from "./routes/model.route.js";
 
 dotenv.config();
 
@@ -15,7 +17,9 @@ const __dirname = path.resolve();
 
 app.use(express.json());
 
-app.use("/api/v1/users", userRoutes);
+app.use(process.env.API_URL + "users", userRoutes);
+app.use(process.env.API_URL + "agencies", agencyRoutes);
+app.use(process.env.API_URL + "models", modelRoutes);
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "/frontend/dist")));

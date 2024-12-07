@@ -7,7 +7,8 @@
     "dev": "NODE_ENV=development nodemon backend/server.js",
     "build": "npm install -g win-node-env && npm install && npm install --prefix frontend && npm run build --prefix frontend",
     "start": "NODE_ENV=production node backend/server.js",
-    "prod": "npm install -g win-node-env && npm install && npm install --prefix frontend && npm run build --prefix frontend && NODE_ENV=production node backend/server.js"
+    "prod": "npm install -g win-node-env && npm install && npm install --prefix frontend && npm run build --prefix frontend && NODE_ENV=production node backend/server.js",
+    "seed": "node ../model-app/backend/seeders/role.seeder.js"
   },
   "type": "module",
   "keywords": [],
