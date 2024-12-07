@@ -11,8 +11,7 @@ const ModelSchema = new mongoose.Schema({
         trim: true
     },
     user_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "User"
+        type: String,
     }
 }, { 
     timestamps: true 

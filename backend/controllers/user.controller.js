@@ -90,15 +90,13 @@ export const getUser = async (req, res) => {
         const user_role = await UserRole.findOne({ user_id: user._id })
         const agency_employee = await AgencyEmployee.findOne({ user_id: user._id });
         model = await Model.findOne({user_id: user._id});
-        //TODO for modal
+        
         if (agency_employee) {
             agency = await Agency.findById(agency_employee.agency_id);
         }
-        if (!model) {
+        if (model) {
             model = {};
         }
-        console.log(agency);
-        console.log(model);
 
         if (!user) {
             return res

@@ -1,6 +1,6 @@
 # MERN Model App
 
-![alt text](image-1.png)
+![alt text](image.png)
 
 ## Setup .env file
 ```
