@@ -121,7 +121,7 @@ const CompleteProfilePage = () => {
                                 size="lg"
                                 id="name"
                                 name="name"
-                                placeholder="Select Agency"
+                                placeholder="Name"
                                 type="name"
                                 onChange={(e) => setName(e.target.value)}
                                 required
@@ -137,7 +137,7 @@ const CompleteProfilePage = () => {
                                         size="lg"
                                         id="name"
                                         name="name"
-                                        placeholder="Name"
+                                        placeholder="Select Agency"
                                         type="name"
                                         onChange={(e) => setName(e.target.value)}
                                         required
