@@ -20,15 +20,16 @@ export const createModel = async (req, res) => {
     if (!model.description || !model.photo) {
         return res.status(400).json({ success: false, message: "Please provide all fields" });
     }
-
-    const newModel = new Model(model);
+    const modelData = { ...model, ...{user_id: user_id} };
+    console.log(modelData);
+    const newModel = new Model(modelData);
 
     try {
         await newModel.save();
         const user = await User.findByIdAndUpdate(user_id, {
             is_profile_complete: true
         }, { new: true });
-        const userRole = await UserRole.create({user_id: user_id, role_id: 2})
+        const userRole = await UserRole.create({user_id: user_id.toString(), role_id: 2})
         res.status(201).json({ success: true, data: { user: user, model: newModel, user_role: userRole } });
     } catch (error) {
         console.log('Error in create model: ', error.message);
@@ -82,6 +83,21 @@ export const updateModelPhoto = async (req, res) => {
             image: photo
         }, { new: true });
         res.status(200).json({ success: true, data: updatedModel });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export const getModelByUserId = async (req, res) => {
+    const user_id = req.body.user_id;
+
+    if (!user_id) {
+        return res.status(400).json({ success: false, message: "Please provide all fields" });
+    }
+
+    try{
+        const model = await Model.findOne({ user_id: user_id });
+        res.status(200).json({ success: true, data: model });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

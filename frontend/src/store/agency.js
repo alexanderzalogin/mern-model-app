@@ -23,4 +23,17 @@ export const useAgencyStore = create((set) => ({
         console.log(data.data)
 		set({ agencies: data.data });
 	},
+    getAgencyByUserId: async (user_id) => {
+		const res = await fetch("/api/v1/agencies/user", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({user_id: user_id}),
+		});
+        const data = await res.json();
+        if (!data.success) return { success: false, message: data.message };
+		
+		return { success: true, data: data.data };
+	},
 }));

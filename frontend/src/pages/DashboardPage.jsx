@@ -20,17 +20,19 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserStore } from "../store/user";
 import userRolesEnum from "../enums/userRoles.enum";
 import Sidebar from "../components/Sidebar";
 
 const DashboardPage = () => {
+    
     const user = JSON.parse(localStorage.getItem("currentUser"));
     const user_role = JSON.parse(localStorage.getItem("currentUserRole"));
-    console.log(user_role.role_id);
     const agency = JSON.parse(localStorage.getItem("agency"));
     const model = JSON.parse(localStorage.getItem("model"));
+    console.log(agency);
+    console.log(model);
     const toast = useToast();
     const [updatedUser, setupdatedUser] = useState(user);
     const { isOpen, onOpen, onClose } = useDisclosure();

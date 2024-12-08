@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 const userRoleSchema = new mongoose.Schema({
     user_id: {
-        type: mongoose.Types.ObjectId,
-        ref: "User"
+        type: String,
     },
     role_id: {
         type: Number,

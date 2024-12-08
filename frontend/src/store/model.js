@@ -23,4 +23,17 @@ export const useModelStore = create((set) => ({
 		const data = await res.json();
 		set({ models: data.data });
 	},
+    getModelByUserId: async (user_id) => {
+		const res = await fetch("/api/v1/models/user", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({user_id: user_id}),
+		});
+        const data = await res.json();
+        if (!data.success) return { success: false, message: data.message };
+
+		return { success: true, data: data.data };
+	},
 }));

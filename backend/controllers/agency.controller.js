@@ -88,3 +88,18 @@ export const updateAgencyPhoto = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 }
+
+export const getAgencyByUserId = async (req, res) => {
+    const user_id = req.body.user_id;
+
+    if (!user_id) {
+        return res.status(400).json({ success: false, message: "Please provide all fields" });
+    }
+    const agency_employee = await AgencyEmployee.findOne({ user_id: user_id });
+    try{
+        const agency = await Agency.findById(agency_employee.agency_id);
+        res.status(200).json({ success: true, data: agency });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}

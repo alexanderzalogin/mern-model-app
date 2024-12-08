@@ -84,19 +84,8 @@ export const getUser = async (req, res) => {
         if (!token) {
             return res.status(400).json({ success: false, message: "Please provide token" });
         }
-        let agency = {};
-        let model = {};
         const user = await User.findOne({ token });
         const user_role = await UserRole.findOne({ user_id: user._id })
-        const agency_employee = await AgencyEmployee.findOne({ user_id: user._id });
-        model = await Model.findOne({user_id: user._id});
-        
-        if (agency_employee) {
-            agency = await Agency.findById(agency_employee.agency_id);
-        }
-        if (model) {
-            model = {};
-        }
 
         if (!user) {
             return res
@@ -114,8 +103,6 @@ export const getUser = async (req, res) => {
                 is_profile_complete: user.is_profile_complete,
             },
             user_role: user_role,
-            agency: agency,
-            model: model
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

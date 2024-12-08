@@ -11,6 +11,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useUserStore } from "../store/user";
 import { useState } from 'react';
 import Cookies from "js-cookie";
+import { useAgencyStore } from '../store/agency';
+import { useModelStore } from '../store/model';
 
 const Login = () => {
     const [email, setEmail] = useState();
@@ -22,6 +24,8 @@ const Login = () => {
     const toast = useToast();
 
     const { loginUser, getUser } = useUserStore();
+    const { getAgencyByUserId } = useAgencyStore();
+    const { getModelByUserId } = useModelStore();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,26 +47,27 @@ const Login = () => {
             const userResult = await getUser(token);
             const user = userResult.data.user;
             const user_role = userResult.data.user_role;
-            const agency = userResult.data.agency;
-            const model = userResult.data.model;
+            const agencyResult = await getAgencyByUserId(user._id.toString());
+            const modelResult = await getModelByUserId(user._id.toString());
 
             Cookies.set("user", JSON.stringify(user), {
                 expires: inFifteenMinutes
             });
             localStorage.setItem('currentUser', JSON.stringify(user));
             localStorage.setItem('currentUserRole', JSON.stringify(user_role));
-            
+            if (agencyResult.success){
+                localStorage.setItem('agency', JSON.stringify(agencyResult.data));
+            }
+            if (modelResult.success){
+                localStorage.setItem('model', JSON.stringify(modelResult.data));
+            }
+
             if (user.is_profile_complete) {
-                if (agency) {
-                    localStorage.setItem('agency', JSON.stringify(agency));
-                } else if (model){
-                    localStorage.setItem('model', JSON.stringify(model));
-                }
-                
                 window.location.href = '/dashboard';
             } else {
                 window.location.href = '/complete-profile';
             }
+            
         }
         setLoading(false);
     }
