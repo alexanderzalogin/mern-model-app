@@ -56,7 +56,7 @@ export default function SimpleSidebar({ user, user_role }) {
   }
   
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.800')}>
+    <Box minH="100vh" bg={useColorModeValue('white', 'gray.800')}>
       <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
       <Drawer
         isOpen={isOpen}
@@ -85,7 +85,7 @@ interface SidebarProps extends BoxProps {
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
-      bg={useColorModeValue('gray.800', 'gray.800')}
+      bg={useColorModeValue('white', 'gray.800')}
       // borderRight="1px"
       // borderRightColor={useColorModeValue('gray.200', 'gray.700')}
       w={{ base: 'full' }}

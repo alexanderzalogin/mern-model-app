@@ -18,6 +18,7 @@ import {
     useDisclosure,
     Input,
     useToast,
+    useColorModeValue
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
@@ -26,7 +27,7 @@ import userRolesEnum from "../enums/userRoles.enum";
 import Sidebar from "../components/Sidebar";
 
 const DashboardPage = () => {
-    
+
     const user = JSON.parse(localStorage.getItem("currentUser"));
     const user_role = JSON.parse(localStorage.getItem("currentUserRole"));
     const agency = JSON.parse(localStorage.getItem("agency"));
@@ -69,37 +70,53 @@ const DashboardPage = () => {
                 gridTemplateColumns={'150px 1fr'}
                 minH='200vh'
                 gap='1'
-                color='blackAlpha.700'
+                color={useColorModeValue("black", "blackAlpha.700")}
                 fontWeight='bold'
-                bg='gray.100'
+                bg={useColorModeValue("white", 'gray.100')}
                 p='4'
                 borderRadius='md'
             >
                 <GridItem
                     pl='2'
-                    bg='gray.800'
+                    bg={useColorModeValue("white", "gray.800")}
                     area={'nav'}
                     borderRadius='md'
                     p='2'
                     m="1"
-                    color='white'
+                    color={useColorModeValue("black", "white")}
                     fontSize='0.9rem'
+                    borderWidth="1px"
+                    borderColor={useColorModeValue("black", 'transparent')}
                 >
                     <Sidebar user={user} user_role={user_role}>
                     </Sidebar>
                 </GridItem>
                 <GridItem
                     pl='2'
-                    bg='gray.800'
+                    bg={useColorModeValue("white", "gray.800")}
                     area={'main'}
                     borderRadius='md'
                     p='2'
                     m="1"
-                    color='white'
+                    color={useColorModeValue("black", "white")}
                     fontSize='1.2rem'
+                    borderWidth="1px"
+                    borderColor={useColorModeValue("black", 'transparent')}
                 >
-                    <Box pos="relative" w="100%" h="200px" bg='gray.700' borderRadius='2xl'>
-                        <Box borderRadius='2xl' bg='gray.700' p="2">
+                    <Box borderWidth="1px"
+                        borderColor={useColorModeValue("black", 'transparent')}
+                        pos="relative" 
+                        w="100%" 
+                        h="200px" 
+                        bg={useColorModeValue("white", "gray.700")} 
+                        borderRadius='2xl'
+                    >
+                        <Box
+                            borderRadius='2xl'
+                            bg={useColorModeValue("white", "gray.700")}
+                            p="2"
+
+                        >
                             Profile
                             <Text fontSize="sm">
                                 {userRolesEnum.map((type) => (
@@ -107,7 +124,19 @@ const DashboardPage = () => {
                                 ))}
                             </Text>
                         </Box>
-                        <Box borderRadius='2xl' bg='gray.800' pos="absolute" top="99%" left="50%" color="white" transform="translate(-50%,-50%)" h="100px" width="95%">
+                        <Box 
+                            borderWidth="1px"
+                            borderColor={useColorModeValue("black", 'transparent')} 
+                            borderRadius='2xl' 
+                            bg={useColorModeValue("white", "gray.800")} 
+                            pos="absolute" 
+                            top="99%" 
+                            left="50%" 
+                            color={useColorModeValue("black", "white")} 
+                            transform="translate(-50%,-50%)" 
+                            h="100px" 
+                            width="95%"
+                        >
                             <HStack>
                                 <Box w={24} pos="relative">
                                     <Image borderRadius='full' src={agency ? agency.photo : model.photo} alt={user.full_name} h={24} w={24} objectFit='cover' p="2" />
@@ -125,12 +154,14 @@ const DashboardPage = () => {
                 </GridItem>
                 <GridItem
                     pl='2'
-                    bg='gray.800'
+                    bg={useColorModeValue("white", "gray.800")}
                     area={'footer'}
                     borderRadius='md'
-                    color='white'
+                    color={useColorModeValue("black", "white")}
                     m="1"
                     fontSize="15px"
+                    borderWidth="1px"
+                    borderColor={useColorModeValue("black", 'transparent')}
                 >
                     Footer
                 </GridItem>
@@ -145,7 +176,7 @@ const DashboardPage = () => {
                             <Input
                                 placeholder='Image URL'
                                 name='photo'
-                                value={updatedUser.photo ? updatedUser.photo : user.photo}
+                                value={updatedUser.photo ? updatedUser.photo : (agency ? agency.photo : model.photo)}
                                 onChange={(e) => setupdatedUser({ photo: e.target.value })}
                             />
                         </VStack>
