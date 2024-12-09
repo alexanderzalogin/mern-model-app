@@ -79,8 +79,8 @@ export const updateModelPhoto = async (req, res) => {
     }
 
     try {
-        const updatedModel = await User.findByIdAndUpdate(id, {
-            image: photo
+        const updatedModel = await Model.findByIdAndUpdate(id, {
+            photo: photo
         }, { new: true });
         res.status(200).json({ success: true, data: updatedModel });
     } catch (error) {

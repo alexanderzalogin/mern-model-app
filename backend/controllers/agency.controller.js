@@ -80,8 +80,8 @@ export const updateAgencyPhoto = async (req, res) => {
     }
 
     try {
-        const updatedAgency = await User.findByIdAndUpdate(id, {
-            image: photo
+        const updatedAgency = await Agency.findByIdAndUpdate(id, {
+            photo: photo
         }, { new: true });
         res.status(200).json({ success: true, data: updatedAgency });
     } catch (error) {

@@ -95,22 +95,4 @@ export const useUserStore = create((set) => ({
 
 		return { success: true, data: {user, user_role} };
 	},
-	updateUserPhoto: async (uid, updatedUserPhoto) => {
-		const res = await fetch(`/api/v1/users/${uid}/photo`, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(updatedUserPhoto),
-		});
-		const data = await res.json();
-		if (!data.success) return { success: false, message: data.message };
-
-		localStorage.setItem('currentUser', JSON.stringify(data.data));
-		set((state) => ({
-			user: data.data
-		}));
-
-		return { success: true, message: data.message };
-	},
 }));

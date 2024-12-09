@@ -36,4 +36,22 @@ export const useModelStore = create((set) => ({
 
 		return { success: true, data: data.data };
 	},
+	updateModelPhoto: async (uid, updatedModelPhoto) => {
+		const res = await fetch(`/api/v1/models/${uid}/photo`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(updatedModelPhoto),
+		});
+		const data = await res.json();
+		if (!data.success) return { success: false, message: data.message };
+
+		localStorage.setItem('model', JSON.stringify(data.data));
+		set((state) => ({
+			model: data.data
+		}));
+
+		return { success: true, message: data.message };
+	},
 }));

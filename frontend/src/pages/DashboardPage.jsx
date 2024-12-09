@@ -22,7 +22,8 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
-import { useUserStore } from "../store/user";
+import { useAgencyStore } from "../store/agency";
+import { useModelStore } from "../store/model";
 import userRolesEnum from "../enums/userRoles.enum";
 import Sidebar from "../components/Sidebar";
 
@@ -32,16 +33,17 @@ const DashboardPage = () => {
     const user_role = JSON.parse(localStorage.getItem("currentUserRole"));
     const agency = JSON.parse(localStorage.getItem("agency"));
     const model = JSON.parse(localStorage.getItem("model"));
-    console.log(agency);
-    console.log(model);
     const toast = useToast();
-    const [updatedUser, setupdatedUser] = useState(user);
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const { updateUserPhoto } = useUserStore();
+    const [updatedAgency, setupdatedAgency] = useState();
+    const [updatedModel, setupdatedModel] = useState();
+    const { isOpen: isAgencyOpen, onOpen: onAgencyOpen, onClose: onAgencyClose } = useDisclosure();
+    const { isOpen: isModelOpen, onOpen: onModelOpen, onClose: onModelClose } = useDisclosure();
+    const { updateAgencyPhoto } = useAgencyStore();
+    const { updateModelPhoto } = useModelStore();
 
-    const handleUpdateUserPhoto = async (uid, updatedUser) => {
-        const { success, message } = await updateUserPhoto(uid, updatedUser);
-        onClose();
+    const handleUpdateAgencyPhoto = async (aid, updatedAgency) => {
+        const { success, message } = await updateAgencyPhoto(aid, updatedAgency);
+        onAgencyClose();
         if (!success) {
             toast({
                 title: "Error",
@@ -53,7 +55,29 @@ const DashboardPage = () => {
         } else {
             toast({
                 title: "Success",
-                description: "User photo updated successfully",
+                description: "Agency photo updated successfully",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
+
+    const handleUpdateModelPhoto = async (mid, updatedModel) => {
+        const { success, message } = await updateModelPhoto(mid, updatedModel);
+        onModelClose();
+        if (!success) {
+            toast({
+                title: "Error",
+                description: message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        } else {
+            toast({
+                title: "Success",
+                description: "Model photo updated successfully",
                 status: "success",
                 duration: 3000,
                 isClosable: true,
@@ -140,7 +164,7 @@ const DashboardPage = () => {
                             <HStack>
                                 <Box w={24} pos="relative">
                                     <Image borderRadius='full' src={agency ? agency.photo : model.photo} alt={user.full_name} h={24} w={24} objectFit='cover' p="2" />
-                                    <EditIcon _hover={{ cursor: "pointer" }} onClick={onOpen} pos="absolute" top="72%" left="72%" size="sm" />
+                                    <EditIcon _hover={{ cursor: "pointer" }} onClick={agency ? onAgencyOpen : onModelOpen} pos="absolute" top="72%" left="72%" size="sm" />
                                 </Box>
                                 <Box>
                                     <VStack alignItems="start">
@@ -166,18 +190,18 @@ const DashboardPage = () => {
                     Footer
                 </GridItem>
             </Grid>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isAgencyOpen} onClose={onAgencyClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Update Profile Photo</ModalHeader>
+                    <ModalHeader>Update Agency Photo</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack spacing={4}>
                             <Input
                                 placeholder='Image URL'
                                 name='photo'
-                                value={updatedUser.photo ? updatedUser.photo : (agency ? agency.photo : model.photo)}
-                                onChange={(e) => setupdatedUser({ photo: e.target.value })}
+                                value={updatedAgency?.photo ? updatedAgency?.photo : agency?.photo}
+                                onChange={(e) => setupdatedAgency({ photo: e.target.value })}
                             />
                         </VStack>
                     </ModalBody>
@@ -186,11 +210,41 @@ const DashboardPage = () => {
                         <Button
                             colorScheme='blue'
                             mr={3}
-                            onClick={() => handleUpdateUserPhoto(user._id, updatedUser)}
+                            onClick={() => handleUpdateAgencyPhoto(agency._id, updatedAgency)}
                         >
                             Update
                         </Button>
-                        <Button variant='ghost' onClick={onClose}>
+                        <Button variant='ghost' onClick={onAgencyClose}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+            <Modal isOpen={isModelOpen} onClose={onModelClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Update Model Photo</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <VStack spacing={4}>
+                            <Input
+                                placeholder='Image URL'
+                                name='photo'
+                                value={updatedModel?.photo ? updatedModel?.photo : model?.photo}
+                                onChange={(e) => setupdatedModel({ photo: e.target.value })}
+                            />
+                        </VStack>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button
+                            colorScheme='blue'
+                            mr={3}
+                            onClick={() => handleUpdateModelPhoto(model._id, updatedModel)}
+                        >
+                            Update
+                        </Button>
+                        <Button variant='ghost' onClick={onModelClose}>
                             Cancel
                         </Button>
                     </ModalFooter>

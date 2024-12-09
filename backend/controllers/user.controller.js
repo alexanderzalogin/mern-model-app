@@ -169,22 +169,3 @@ export const deleteUser = async (req, res) => {
     }
 }
 
-export const updateUserPhoto = async (req, res) => {
-    const { id } = req.params;
-
-    const photo = req.body.photo;
-    console.log(photo);
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ success: false, message: "Invalid user id" });
-    }
-
-    try {
-        const updatedUser = await User.findByIdAndUpdate(id, {
-            image: photo
-        }, { new: true });
-        res.status(200).json({ success: true, data: updatedUser });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-}
