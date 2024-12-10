@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { sendRequest, createRequestOptions } from "../services/api.service"
+import { sendRequest, createRequestOptions } from "../services/api/v1/api.service"
 
 export const useAgencyStore = create((set) => ({
 	createAgency: async (user_id, newAgency) => {
