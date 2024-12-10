@@ -13,7 +13,7 @@ export const getAgencies = async (req, res) => {
         res.status(500).json({ success: false, message: result.errorMessage });
     }
 
-    res.status(200).json({ success: true, data: result.value.agencies });
+    res.status(200).json({ success: true, data: result.value });
 }
 
 export const createAgency = async (req, res) => {
