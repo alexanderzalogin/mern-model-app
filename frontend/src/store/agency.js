@@ -18,17 +18,12 @@ export const useAgencyStore = create((set) => ({
 		set(res.data);
 	},
     getAgencyByUserId: async (user_id) => {
-		const res = await fetch("/api/v1/agencies/user", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({user_id: user_id}),
-		});
-        const data = await res.json();
-        if (!data.success) return { success: false, message: data.message };
+		const options = createRequestOptions('POST', {user_id: user_id})
+		const res = await sendRequest(`agencies/user`, options);
+		
+        if (!res.success) return { success: false, message: res.message };
 
-		return { success: true, data: data.data };
+		return { success: true, data: res.data.agency };
 	},
 	updateAgencyPhoto: async (uid, updatedAgencyPhoto) => {
 		const options = createRequestOptions('PUT', updatedAgencyPhoto)

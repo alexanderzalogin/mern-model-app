@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import Agency from '../models/agency.model.js';
 import User from '../models/user.model.js';
-import AgencyEmployee from "../models/agency/agencyEmployee.js";
 import AgencyService from "../services/agency.service.js"
 import { CreateAgencyRequestResource } from "../resources/requests/agency/createAgency.request.js";
 import { UpdateAgencyPhotoRequestResource } from "../resources/requests/agency/updateAgencyPhoto.request.js"
+import { GetAgencyByUserIdRequestResource } from "../resources/requests/agency/getAgencyByUserId.request.js";
 
 export const getAgencies = async (req, res) => {
     const result = await AgencyService.getAgencies();
@@ -88,16 +88,21 @@ export const updateAgencyPhoto = async (req, res) => {
 }
 
 export const getAgencyByUserId = async (req, res) => {
-    const user_id = req.body.user_id;
-
-    if (!user_id) {
-        return res.status(400).json({ success: false, message: "Please provide all fields" });
-    }
-    const agency_employee = await AgencyEmployee.findOne({ user_id: user_id });
-    try{
-        const agency = await Agency.findById(agency_employee.agency_id);
-        res.status(200).json({ success: true, data: agency });
+    let request;
+    try {
+        request = new GetAgencyByUserIdRequestResource(req.body);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(400).json(error.message);
+        return;
     }
+
+    const result = await AgencyService.getAgencyByUserId(request);
+    
+    if (result.errorMessage) {
+        res.status(500).json({ success: false, message: result.errorMessage });
+        return;
+    }
+
+    res.status(200).json({ success: true, data: result.value });
+    
 }

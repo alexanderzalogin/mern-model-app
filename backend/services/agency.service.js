@@ -7,6 +7,7 @@ import { ResponseResource } from '../resources/responses/response.resource.js';
 import { GetAgenciesResponseResource } from '../resources/responses/agency/getAgencies.resource.js';
 import { CreateAgencyResponseResource } from '../resources/responses/agency/createAgency.response.js';
 import { UpdateAgencyPhotoResponseResource } from '../resources/responses/agency/updateAgencyPhoto.response.js';
+import { GetAgencyByUserIdResponseResource } from '../resources/responses/agency/getAgencyByUserId.response.js';
 
 async function getAgencies() {
     try {
@@ -43,6 +44,16 @@ async function updateAgencyPhoto(req) {
     }
 }
 
-const AgencyService = { getAgencies, createAgency, updateAgencyPhoto };
+async function getAgencyByUserId(req) {
+    try {
+        const agency_employee = await AgencyEmployee.findOne({ user_id: req.user_id });
+        const agency = await Agency.findById(agency_employee.agency_id);
+        return new ResponseResource( new GetAgencyByUserIdResponseResource(agency) );
+    } catch (error) {
+        return new ResponseResource(null, error.message);
+    }
+}
+
+const AgencyService = { getAgencies, createAgency, updateAgencyPhoto, getAgencyByUserId };
 
 export default AgencyService;
