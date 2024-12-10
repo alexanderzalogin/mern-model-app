@@ -21,7 +21,7 @@ export const useAgencyStore = create((set) => ({
 		const res = await fetch("/api/v1/agencies");
 		const data = await res.json();
         console.log(data.data)
-		set({ agencies: data.data });
+		set(data.data);
 	},
     getAgencyByUserId: async (user_id) => {
 		const res = await fetch("/api/v1/agencies/user", {
@@ -33,7 +33,7 @@ export const useAgencyStore = create((set) => ({
 		});
         const data = await res.json();
         if (!data.success) return { success: false, message: data.message };
-		
+
 		return { success: true, data: data.data };
 	},
 	updateAgencyPhoto: async (uid, updatedAgencyPhoto) => {

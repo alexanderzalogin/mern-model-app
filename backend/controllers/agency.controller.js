@@ -3,39 +3,37 @@ import Agency from '../models/agency.model.js';
 import User from '../models/user.model.js';
 import UserRole from "../models/user/userRole.model.js";
 import AgencyEmployee from "../models/agency/agencyEmployee.js";
+import AgencyService from "../services/agency.service.js"
+import { CreateAgencyRequestResource } from "../resources/requests/agency/createAgency.request.js";
 
 export const getAgencies = async (req, res) => {
-    try {
-        const agencies = await Agency.find();
-        res.status(200).json({ success: true, data: agencies });
-    } catch (error) {
-        console.log("error in fetching agencies: ", error.message);
-        res.status(500).json({ success: false, message: "Server error" });
+    const result = await AgencyService.getAgencies();
+        
+    if (result.errorMessage) {
+        console.log("error in fetching agencies: ", result.errorMessage);
+        res.status(500).json({ success: false, message: result.errorMessage });
     }
+
+    res.status(200).json({ success: true, data: result.value.agencies });
 }
 
 export const createAgency = async (req, res) => {
-    const agency = req.body.agency;
-    const user_id = req.body.user_id;
-
-    if (!agency.name || !agency.description || !agency.photo) {
-        return res.status(400).json({ success: false, message: "Please provide all fields" });
-    }
-
-    const newAgency = new Agency(agency);
-
+    let agency;
     try {
-        await newAgency.save();
-        const user = await User.findByIdAndUpdate(user_id, {
-            is_profile_complete: true
-        }, { new: true });
-        const userRole = await UserRole.create({ user_id: user_id, role_id: 1 })
-        const agencyEmployee = await AgencyEmployee.create({ user_id: user_id, agency_id: newAgency._id });
-        res.status(201).json({ success: true, data: { user: user, agency: newAgency, user_role: userRole } });
+        agency = new CreateAgencyRequestResource(req.body);
     } catch (error) {
-        console.log('Error in create agency: ', error.message);
-        res.status(500).json({ success: false, message: "Server error" });
+        res.status(400).json(error.message);
+        return;
     }
+
+    const result = await AgencyService.createAgency(agency);
+
+    if (result.errorMessage) {
+        res.status(500).json({ success: false, message: result.errorMessage });
+        return;
+    }
+
+    res.status(201).json({ success: true, data: result.value });
 }
 
 export const updateAgency = async (req, res) => {
