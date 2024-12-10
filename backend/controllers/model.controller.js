@@ -21,7 +21,6 @@ export const createModel = async (req, res) => {
         return res.status(400).json({ success: false, message: "Please provide all fields" });
     }
     const modelData = { ...model, ...{user_id: user_id} };
-    console.log(modelData);
     const newModel = new Model(modelData);
 
     try {

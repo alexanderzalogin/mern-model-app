@@ -3,14 +3,14 @@ import User from '../models/user.model.js';
 import UserRole from '../models/user/userRole.model.js';
 import AgencyEmployee from '../models/agency/agencyEmployee.js';
 
-import { AgencyResponseResource } from '../resources/responses/agency/agency.resource.js';
 import { CreateAgencyResponseResource } from '../resources/responses/agency/createAgency.response.js';
 import { ResponseResource } from '../resources/responses/response.resource.js';
+import { GetAgenciesResponseResource } from '../resources/responses/agency/getAgencies.resource.js';
 
 async function getAgencies() {
     try {
         const agencies = await Agency.find();
-        return new ResponseResource(new AgencyResponseResource(agencies));
+        return new ResponseResource(new GetAgenciesResponseResource(agencies));
     } catch (error) {
         return new ResponseResource(null, error.message);
     }

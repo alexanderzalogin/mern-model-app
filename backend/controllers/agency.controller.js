@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import Agency from '../models/agency.model.js';
 import User from '../models/user.model.js';
-import UserRole from "../models/user/userRole.model.js";
 import AgencyEmployee from "../models/agency/agencyEmployee.js";
 import AgencyService from "../services/agency.service.js"
 import { CreateAgencyRequestResource } from "../resources/requests/agency/createAgency.request.js";
