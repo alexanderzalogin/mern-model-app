@@ -4,6 +4,7 @@ import User from '../models/user.model.js';
 import AgencyEmployee from "../models/agency/agencyEmployee.js";
 import AgencyService from "../services/agency.service.js"
 import { CreateAgencyRequestResource } from "../resources/requests/agency/createAgency.request.js";
+import { UpdateAgencyPhotoRequestResource } from "../resources/requests/agency/updateAgencyPhoto.request.js"
 
 export const getAgencies = async (req, res) => {
     const result = await AgencyService.getAgencies();
@@ -68,22 +69,22 @@ export const deleteAgency = async (req, res) => {
 }
 
 export const updateAgencyPhoto = async (req, res) => {
-    const { id } = req.params;
-
-    const photo = req.body.photo;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ success: false, message: "Invalid agency id" });
-    }
-
+    let request;
     try {
-        const updatedAgency = await Agency.findByIdAndUpdate(id, {
-            photo: photo
-        }, { new: true });
-        res.status(200).json({ success: true, data: updatedAgency });
+        request = new UpdateAgencyPhotoRequestResource(req.body, req.params);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(400).json(error.message);
+        return;
     }
+
+    const result = await AgencyService.updateAgencyPhoto(request);
+
+    if (result.errorMessage) {
+        res.status(500).json({ success: false, message: result.errorMessage });
+        return;
+    }
+
+    res.status(200).json({ success: true, data: result.value });
 }
 
 export const getAgencyByUserId = async (req, res) => {

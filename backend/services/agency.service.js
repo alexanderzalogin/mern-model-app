@@ -3,9 +3,10 @@ import User from '../models/user.model.js';
 import UserRole from '../models/user/userRole.model.js';
 import AgencyEmployee from '../models/agency/agencyEmployee.js';
 
-import { CreateAgencyResponseResource } from '../resources/responses/agency/createAgency.response.js';
 import { ResponseResource } from '../resources/responses/response.resource.js';
 import { GetAgenciesResponseResource } from '../resources/responses/agency/getAgencies.resource.js';
+import { CreateAgencyResponseResource } from '../resources/responses/agency/createAgency.response.js';
+import { UpdateAgencyPhotoResponseResource } from '../resources/responses/agency/updateAgencyPhoto.response.js';
 
 async function getAgencies() {
     try {
@@ -31,6 +32,17 @@ async function createAgency(req) {
     }
 }
 
-const AgencyService = { getAgencies, createAgency };
+async function updateAgencyPhoto(req) {
+    try {
+        const updatedAgency = await Agency.findByIdAndUpdate(req.agencyId, {
+            photo: req.photo
+        }, { new: true });
+        return new ResponseResource( new UpdateAgencyPhotoResponseResource(updatedAgency) );
+    } catch (error) {
+        return new ResponseResource(null, error.message);
+    }
+}
+
+const AgencyService = { getAgencies, createAgency, updateAgencyPhoto };
 
 export default AgencyService;

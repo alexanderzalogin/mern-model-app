@@ -31,21 +31,16 @@ export const useAgencyStore = create((set) => ({
 		return { success: true, data: data.data };
 	},
 	updateAgencyPhoto: async (uid, updatedAgencyPhoto) => {
-		const res = await fetch(`/api/v1/agencies/${uid}/photo`, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(updatedAgencyPhoto),
-		});
-		const data = await res.json();
-		if (!data.success) return { success: false, message: data.message };
+		const options = createRequestOptions('PUT', updatedAgencyPhoto)
+		const res = await sendRequest(`agencies/${uid}/photo`, options);
 
-		localStorage.setItem('agency', JSON.stringify(data.data));
+		if (!res.success) return { success: false, message: res.message };
+
+		localStorage.setItem('agency', JSON.stringify(res.data.agency));
 		set((state) => ({
-			agency: data.data
+			agency: res.data.agency
 		}));
 
-		return { success: true, message: data.message };
+		return { success: true, data: res.data.agency };
 	},
 }));
