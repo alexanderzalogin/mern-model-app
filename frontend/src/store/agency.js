@@ -1,27 +1,21 @@
 import { create } from "zustand";
+import { sendRequest, createRequestOptions } from "../services/api.service"
 
 export const useAgencyStore = create((set) => ({
 	createAgency: async (user_id, newAgency) => {
 		if (!newAgency.name || !newAgency.description || !newAgency.photo) {
 			return { success: false, message: "Please fill in all fields." };
 		}
-		const res = await fetch("/api/v1/agencies", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({user_id: user_id, agency: newAgency}),
-		});
-		const data = await res.json();
-        if (!data.success) return { success: false, message: data.message };
+		const options = createRequestOptions('POST', {user_id: user_id, agency: newAgency})
+		const res = await sendRequest("agencies", options);
 
-		return { success: true, data: data.data };
+        if (!res.success) return { success: false, message: res.message };
+
+		return { success: true, data: res.data };
 	},
     getAgencies: async () => {
-		const res = await fetch("/api/v1/agencies");
-		const data = await res.json();
-        console.log(data.data)
-		set(data.data);
+		const res = await sendRequest("agencies");
+		set(res.data);
 	},
     getAgencyByUserId: async (user_id) => {
 		const res = await fetch("/api/v1/agencies/user", {
