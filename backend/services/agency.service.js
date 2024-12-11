@@ -4,10 +4,10 @@ import UserRole from '../models/user/userRole.model.js';
 import AgencyEmployee from '../models/agency/agencyEmployee.js';
 
 import { ResponseResource } from '../resources/responses/response.resource.js';
-import { GetAgenciesResponseResource } from '../resources/responses/agency/getAgencies.resource.js';
-import { CreateAgencyResponseResource } from '../resources/responses/agency/createAgency.response.js';
-import { UpdateAgencyPhotoResponseResource } from '../resources/responses/agency/updateAgencyPhoto.response.js';
-import { GetAgencyByUserIdResponseResource } from '../resources/responses/agency/getAgencyByUserId.response.js';
+import { GetAgenciesResponseResource } from '../resources/responses/agency/getAgenciesResponse.resource.js';
+import { CreateAgencyResponseResource } from '../resources/responses/agency/createAgencyResponse.resource.js';
+import { UpdateAgencyPhotoResponseResource } from '../resources/responses/agency/updateAgencyPhotoResponse.resource.js';
+import { GetAgencyByUserIdResponseResource } from '../resources/responses/agency/getAgencyByUserIdResponse.resource.js';
 
 async function getAgencies() {
     try {

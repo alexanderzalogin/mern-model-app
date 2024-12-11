@@ -2,15 +2,17 @@ import mongoose from "mongoose";
 import Model from '../models/model.model.js';
 import User from '../models/user.model.js';
 import UserRole from "../models/user/userRole.model.js";
+import ModelService from "../services/model.service.js"
 
 export const getModels = async (req, res) => {
-    try {
-        const models = await Model.find();
-        res.status(200).json({ success: true, data: models });
-    } catch (error) {
-        console.log("error in fetching models: ", error.message);
-        res.status(500).json({ success: false, message: "Server error" });
+    const result = await ModelService.getModels();
+        
+    if (result.errorMessage) {
+        console.log("error in fetching models: ", result.errorMessage);
+        res.status(500).json({ success: false, message: result.errorMessage });
     }
+
+    res.status(200).json({ success: true, data: result.value });
 }
 
 export const createModel = async (req, res) => {

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { sendRequest, createRequestOptions } from "../services/api/v1/api.service"
 
 export const useModelStore = create((set) => ({
 	createModel: async (user_id, newModel) => {
@@ -19,9 +20,8 @@ export const useModelStore = create((set) => ({
 		return { success: true, data: data.data };
 	},
     getModels: async () => {
-		const res = await fetch("/api/v1/models");
-		const data = await res.json();
-		set({ models: data.data });
+		const res = await sendRequest("models");
+		set(res.data);
 	},
     getModelByUserId: async (user_id) => {
 		const res = await fetch("/api/v1/models/user", {
