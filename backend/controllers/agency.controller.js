@@ -18,15 +18,15 @@ export const getAgencies = async (req, res) => {
 }
 
 export const createAgency = async (req, res) => {
-    let agency;
+    let request;
     try {
-        agency = new CreateAgencyRequestResource(req.body);
+        request = new CreateAgencyRequestResource(req.body);
     } catch (error) {
         res.status(400).json(error.message);
         return;
     }
 
-    const result = await AgencyService.createAgency(agency);
+    const result = await AgencyService.createAgency(request);
 
     if (result.errorMessage) {
         res.status(500).json({ success: false, message: result.errorMessage });

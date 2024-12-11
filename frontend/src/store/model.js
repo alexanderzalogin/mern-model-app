@@ -6,28 +6,28 @@ export const useModelStore = create((set) => ({
 		if (!newModel.description || !newModel.photo) {
 			return { success: false, message: "Please fill in all fields." };
 		}
-		const options = createRequestOptions('POST', {user_id: user_id, model: newModel})
+		const options = createRequestOptions('POST', { user_id: user_id, model: newModel })
 		const res = await sendRequest("models", options);
 
-        if (!res.success) return { success: false, message: res.message };
+		if (!res.success) return { success: false, message: res.message };
 
 		return { success: true, data: res.data };
-		
+
 	},
-    getModels: async () => {
+	getModels: async () => {
 		const res = await sendRequest("models");
 		set(res.data);
 	},
-    getModelByUserId: async (user_id) => {
+	getModelByUserId: async (user_id) => {
 		const res = await fetch("/api/v1/models/user", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({user_id: user_id}),
+			body: JSON.stringify({ user_id: user_id }),
 		});
-        const data = await res.json();
-        if (!data.success) return { success: false, message: data.message };
+		const data = await res.json();
+		if (!data.success) return { success: false, message: data.message };
 
 		return { success: true, data: data.data };
 	},

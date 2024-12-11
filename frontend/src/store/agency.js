@@ -6,22 +6,22 @@ export const useAgencyStore = create((set) => ({
 		if (!newAgency.name || !newAgency.description || !newAgency.photo) {
 			return { success: false, message: "Please fill in all fields." };
 		}
-		const options = createRequestOptions('POST', {user_id: user_id, agency: newAgency})
+		const options = createRequestOptions('POST', { user_id: user_id, agency: newAgency })
 		const res = await sendRequest("agencies", options);
 
-        if (!res.success) return { success: false, message: res.message };
+		if (!res.success) return { success: false, message: res.message };
 
 		return { success: true, data: res.data };
 	},
-    getAgencies: async () => {
+	getAgencies: async () => {
 		const res = await sendRequest("agencies");
 		set(res.data);
 	},
-    getAgencyByUserId: async (user_id) => {
-		const options = createRequestOptions('POST', {user_id: user_id})
+	getAgencyByUserId: async (user_id) => {
+		const options = createRequestOptions('POST', { user_id: user_id })
 		const res = await sendRequest(`agencies/user`, options);
-		
-        if (!res.success) return { success: false, message: res.message };
+
+		if (!res.success) return { success: false, message: res.message };
 
 		return { success: true, data: res.data.agency };
 	},

@@ -90,9 +90,9 @@ export const useUserStore = create((set) => ({
 		const data = await res.json();
 		const user = data.user;
 		const user_role = data.user_role;
-		
+
 		if (!data.success) return { success: false, message: "Failed to fetch user" };
 
-		return { success: true, data: {user, user_role} };
+		return { success: true, data: { user, user_role } };
 	},
 }));
