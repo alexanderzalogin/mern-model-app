@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import Agency from '../models/agency.model.js';
 import User from '../models/user.model.js';
-import AgencyService from "../services/agency.service.js"
+import AgencyService from "../services/agency.service.js";
 import { CreateAgencyRequestResource } from "../resources/requests/agency/createAgencyRequest.resource.js";
-import { UpdateAgencyPhotoRequestResource } from "../resources/requests/agency/updateAgencyPhotoRequest.resource.js"
+import { UpdateAgencyPhotoRequestResource } from "../resources/requests/agency/updateAgencyPhotoRequest.resource.js";
 import { GetAgencyByUserIdRequestResource } from "../resources/requests/agency/getAgencyByUserIdRequest.resource.js";
 
 export const getAgencies = async (req, res) => {

@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 import Model from '../models/model.model.js';
 import User from '../models/user.model.js';
 import UserRole from "../models/user/userRole.model.js";
-import ModelService from "../services/model.service.js"
+import ModelService from "../services/model.service.js";
+
+import { CreateModelRequestResource } from "../resources/requests/model/createModelRequestResource.resource.js";
 
 export const getModels = async (req, res) => {
     const result = await ModelService.getModels();
@@ -16,26 +18,22 @@ export const getModels = async (req, res) => {
 }
 
 export const createModel = async (req, res) => {
-    const model = req.body.model;
-    const user_id = req.body.user_id;
-
-    if (!model.description || !model.photo) {
-        return res.status(400).json({ success: false, message: "Please provide all fields" });
-    }
-    const modelData = { ...model, ...{user_id: user_id} };
-    const newModel = new Model(modelData);
-
+    let request;
     try {
-        await newModel.save();
-        const user = await User.findByIdAndUpdate(user_id, {
-            is_profile_complete: true
-        }, { new: true });
-        const userRole = await UserRole.create({user_id: user_id.toString(), role_id: 2})
-        res.status(201).json({ success: true, data: { user: user, model: newModel, user_role: userRole } });
+        request = new CreateModelRequestResource(req.body);
     } catch (error) {
-        console.log('Error in create model: ', error.message);
-        res.status(500).json({ success: false, message: "Server error" });
+        res.status(400).json(error.message);
+        return;
     }
+
+    const result = await ModelService.createModel(request);
+
+    if (result.errorMessage) {
+        res.status(500).json({ success: false, message: result.errorMessage });
+        return;
+    }
+
+    res.status(201).json({ success: true, data: result.value });
 }
 
 export const updateModel = async (req, res) => {
