@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import Model from '../models/model.model.js';
 import User from '../models/user.model.js';
-import UserRole from "../models/user/userRole.model.js";
 import ModelService from "../services/model.service.js";
 
 import { CreateModelRequestResource } from "../resources/requests/model/createModelRequestResource.resource.js";
+import { UpdateModelPhotoRequestResource } from "../resources/requests/model/updateModelPhotoRequest.resource.js";
 
 export const getModels = async (req, res) => {
     const result = await ModelService.getModels();
@@ -69,22 +69,22 @@ export const deleteModel = async (req, res) => {
 }
 
 export const updateModelPhoto = async (req, res) => {
-    const { id } = req.params;
-
-    const photo = req.body.photo;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ success: false, message: "Invalid model id" });
-    }
-
+    let request;
     try {
-        const updatedModel = await Model.findByIdAndUpdate(id, {
-            photo: photo
-        }, { new: true });
-        res.status(200).json({ success: true, data: updatedModel });
+        request = new UpdateModelPhotoRequestResource(req.body, req.params);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(400).json(error.message);
+        return;
     }
+
+    const result = await ModelService.updateModelPhoto(request);
+    
+    if (result.errorMessage) {
+        res.status(500).json({ success: false, message: result.errorMessage });
+        return;
+    }
+
+    res.status(201).json({ success: true, data: result.value });
 }
 
 export const getModelByUserId = async (req, res) => {

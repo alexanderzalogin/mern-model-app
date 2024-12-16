@@ -4,7 +4,8 @@ import UserRole from '../models/user/userRole.model.js';
 
 import { ResponseResource } from '../resources/responses/response.resource.js';
 import { GetModelsResponseResource } from '../resources/responses/model/getModelsResponse.resource.js';
-import { CreateModelResponseResource } from '../resources/responses/model/createModelResponse.resource.js'
+import { CreateModelResponseResource } from '../resources/responses/model/createModelResponse.resource.js';
+import { UpdateModelPhotoResponseResource } from '../resources/responses/model/updateModelPhotoResponse.resource.js';
 
 async function getModels() {
     try {
@@ -30,6 +31,17 @@ async function createModel(req) {
     }
 }
 
-const ModelService = { getModels, createModel };
+async function updateModelPhoto(req) {
+    try {
+        const updatedModel = await Model.findByIdAndUpdate(req.modelId, {
+            photo: req.photo
+        }, { new: true });
+        return new ResponseResource( new UpdateModelPhotoResponseResource(updatedModel) );
+    } catch (error) {
+        return new ResponseResource(null, error.message);
+    }
+}
+
+const ModelService = { getModels, createModel, updateModelPhoto };
 
 export default ModelService;
