@@ -19,17 +19,12 @@ export const useModelStore = create((set) => ({
 		set(res.data);
 	},
 	getModelByUserId: async (user_id) => {
-		const res = await fetch("/api/v1/models/user", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ user_id: user_id }),
-		});
-		const data = await res.json();
-		if (!data.success) return { success: false, message: data.message };
+		const options = createRequestOptions('POST', { user_id: user_id })
+		const res = await sendRequest(`models/user`, options);
 
-		return { success: true, data: data.data };
+		if (!res.success) return { success: false, message: res.message };
+
+		return { success: true, data: res.data.model };
 	},
 	updateModelPhoto: async (uid, updatedModelPhoto) => {
 		const options = createRequestOptions('PUT', updatedModelPhoto)

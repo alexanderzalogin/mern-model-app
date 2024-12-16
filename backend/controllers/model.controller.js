@@ -5,6 +5,7 @@ import ModelService from "../services/model.service.js";
 
 import { CreateModelRequestResource } from "../resources/requests/model/createModelRequestResource.resource.js";
 import { UpdateModelPhotoRequestResource } from "../resources/requests/model/updateModelPhotoRequest.resource.js";
+import { GetModelByUserIdRequestResource } from "../resources/requests/model/getModelByUserIdRequest.resource.js";
 
 export const getModels = async (req, res) => {
     const result = await ModelService.getModels();
@@ -78,7 +79,7 @@ export const updateModelPhoto = async (req, res) => {
     }
 
     const result = await ModelService.updateModelPhoto(request);
-    
+
     if (result.errorMessage) {
         res.status(500).json({ success: false, message: result.errorMessage });
         return;
@@ -88,16 +89,20 @@ export const updateModelPhoto = async (req, res) => {
 }
 
 export const getModelByUserId = async (req, res) => {
-    const user_id = req.body.user_id;
-
-    if (!user_id) {
-        return res.status(400).json({ success: false, message: "Please provide all fields" });
-    }
-
-    try{
-        const model = await Model.findOne({ user_id: user_id });
-        res.status(200).json({ success: true, data: model });
+    let request;
+    try {
+        request = new GetModelByUserIdRequestResource(req.body);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(400).json(error.message);
+        return;
     }
+
+    const result = await ModelService.getModelByUserId(request);
+    
+    if (result.errorMessage) {
+        res.status(500).json({ success: false, message: result.errorMessage });
+        return;
+    }
+
+    res.status(200).json({ success: true, data: result.value });
 }
